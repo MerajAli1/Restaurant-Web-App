@@ -12,7 +12,7 @@ import {
 
 const Navbar = () => {
   const { addToCart } = useSelector((state) => state.addToCartReducer);
-  console.log(addToCart, "Navbar");
+  // console.log(addToCart, "Navbar");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

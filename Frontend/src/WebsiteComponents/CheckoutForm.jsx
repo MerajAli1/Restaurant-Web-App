@@ -72,24 +72,32 @@ const CheckoutForm = () => {
         phoneNumber,
         message,
         paymentMethod: selectedValue,
-        addToCart,
+        orderItems: addToCart.map((orderItem) => ({
+          id: orderItem.id,
+          quantity: orderItem.count,
+          title: orderItem.title,
+          // abhi jo api lgi hwe hy usmy price nhi hy
+          // price: orderItem.price,
+        })),
       };
+
       console.log("data", data);
     }
     try {
-      const res = await axios.post(
-        `${BASE_URL}/checkout`,
-        {
-          address: address,
-          email: email,
-          firstName: firstName,
-          lastName: lastName,
-          phoneNumber: phoneNumber,
-          message: message,
-          paymentMethod: selectedValue,
-          addToCart: addToCart,
-        }
-      );
+      const res = await axios.post(`${BASE_URL}/checkout`, {
+        address: address,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+        message: message,
+        paymentMethod: selectedValue,
+        orderItems: addToCart.map((orderItem) => ({
+          id: orderItem.id,
+          quantity: orderItem.count,
+          title: orderItem.title,
+        })),
+      });
       console.log("res", res);
       notifySuccess("🦄 Your Order Placed Successfully");
     } catch (error) {

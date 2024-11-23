@@ -10,7 +10,7 @@ const router = Router();
 
 router.route("/tableData").post(TableData);
 router.route("/getTableData").get(GetTableData);
-router.route("/delTableData").delete(DelTableData);
-router.route("/Acc&RejData").delete(Reservation);
+router.route("/delTableData/:id").delete(DelTableData);
+router.route("/Acc&RejData/:id").delete(Reservation);
 
 export default router;

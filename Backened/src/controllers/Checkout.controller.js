@@ -1,3 +1,4 @@
+import { Order } from "../models/Acc&RejOrders.js";
 import { Checkout } from "../models/Checkout.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -12,10 +13,19 @@ const CheckoutData = asyncHandler(async (req, res) => {
     message,
     paymentMethod,
     address,
-    addToCart,
+    orderItems,
   } = req.body;
   try {
-    if (!(firstName && lastName && email && phoneNumber && paymentMethod && address)) {
+    if (
+      !(
+        firstName &&
+        lastName &&
+        email &&
+        phoneNumber &&
+        paymentMethod &&
+        address
+      )
+    ) {
       throw new ApiError(400, "All fields are required for placing th order..");
     }
     const checkout = await Checkout.create({
@@ -26,7 +36,7 @@ const CheckoutData = asyncHandler(async (req, res) => {
       message,
       paymentMethod,
       address,
-      addToCart,
+      orderItems,
     });
 
     return res
@@ -76,4 +86,34 @@ const DelCheckoutData = asyncHandler(async (req, res) => {
   }
 });
 
-export { CheckoutData, GetCheckoutData, DelCheckoutData };
+const OrderTransfer = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
+  try {
+    if (!id) {
+      throw new ApiError(400, "Id Not found... ...");
+    }
+    // finding the data from checkout
+    const findOrder = await Checkout.findOne({ _id: id });
+    //sending data to the Accepted Order
+    const sendOrder = await Order.create({
+      OrderData: findOrder,
+      status: status,
+    });
+    //now delete from checkout
+    await Checkout.findByIdAndDelete({ _id: id });
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          200,
+          sendOrder,
+          "Order send Successfully to Accepted Order and deleted from orders..."
+        )
+      );
+  } catch (error) {
+    throw new ApiError(500, error);
+  }
+});
+
+export { CheckoutData, GetCheckoutData, DelCheckoutData, OrderTransfer };

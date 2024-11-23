@@ -3,6 +3,7 @@ import {
   DelCheckoutData,
   CheckoutData,
   GetCheckoutData,
+  OrderTransfer,
 } from "../controllers/Checkout.controller.js";
 
 const router = Router();
@@ -12,5 +13,6 @@ router.route("/checkout").post(CheckoutData);
 router.route("/getcheckout").get(GetCheckoutData);
 // Integrated on Frontend TotalOrders.js Component
 router.route("/delcheckout/:id").delete(DelCheckoutData);
+router.route("/orderTransfer/:id").delete(OrderTransfer);
 
 export default router;
