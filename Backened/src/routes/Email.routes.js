@@ -11,6 +11,7 @@ const router = Router();
 router.route("/acceptedOrder/:id").post(AcceptedOrder);
 //Integrated On frontend TotalOrder.jsx Component
 router.route("/rejectedOrder/:id").post(RejectedOrder);
+//new database for  acceptig and deleting
 router.route("/acceptedReservation/:id").post(AcceptedReservation);
 router.route("/rejectedReservation/:id").post(RejectedReservation);
 
