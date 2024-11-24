@@ -1,6 +1,7 @@
 import { Table } from "../models/TableReservation.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
+import {ApiResponse} from '../utils/ApiResponse.js'
 // import nodemailer from "nodemailer";
 
 const TableData = asyncHandler(async (req, res) => {
@@ -50,7 +51,7 @@ const TableData = asyncHandler(async (req, res) => {
       .status(201)
       .json(new ApiResponse(200, tableData, "Table Data send Successfully..."));
   } catch (error) {
-    throw new ApiError(500, error);
+    return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 });
 

@@ -4,7 +4,8 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { useNavigate } from "react-router-dom";
-
+import axios from "axios";
+import { BASE_URL } from "../Base_URL/BASE_URL";
 const ReservationData = ({ modal, setModal, date, time, size, day }) => {
   const [detail, setDetail] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -29,7 +30,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
 
     const ReservatinData = {
       fullName,
-      phoneNumber,
+      phoneNumber:parseInt(phoneNumber),
       email,
       occassion,
       request,
@@ -38,7 +39,29 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
       ReservationTime: time,
       partySize: size,
     };
-    console.log(ReservatinData, "ReservatinData");
+    console.log('ReservatinData==>', ReservatinData);
+    
+    // try {
+    //   const res = axios.post(`${BASE_URL}/tableData`, {
+    //     fullName,
+    //     phoneNumber,
+    //     email,
+    //     occassion,
+    //     request,
+    //     ReservationDate: date,
+    //     ReservationDay: day,
+    //     ReservationTime: time,
+    //     partySize: size,
+    //   },
+    // {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
+    //   console.log("res==>", res);
+    // } catch (error) {
+    //   console.log("error==>", error);
+    // }
   };
 
   return (
