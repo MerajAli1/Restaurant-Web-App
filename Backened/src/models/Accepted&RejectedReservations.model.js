@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const DataSchema = new mongoose.Schema(
   {
@@ -15,4 +15,4 @@ const DataSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Data = mongoose.model("product", DataSchema);
+export const Data = mongoose.model("data", DataSchema);
