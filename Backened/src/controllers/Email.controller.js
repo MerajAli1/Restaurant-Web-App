@@ -12,7 +12,7 @@ const AcceptedOrder = asyncHandler(async (req, res) => {
     const AccOrder = await Checkout.findById(id);
 
     // Error handling if order is not found
-    if (!order) {
+    if (!AccOrder) {
       throw new ApiError(400, "Order not found..!");
     }
     const sub = "Order Accepted";
@@ -45,7 +45,7 @@ const RejectedOrder = asyncHandler(async (req, res) => {
     if (!RejOrder) {
       throw new ApiError(400, "Order not found..!");
     }
-    const sub = "Order Accepted";
+    const sub = "Order Rejected";
     const msg = `Dear ${RejOrder.firstName} ${
       RejOrder.lastName
     },\n\nYour order of ${

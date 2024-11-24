@@ -16,8 +16,15 @@ import { toast, ToastContainer } from "react-toastify";
 const TotalOrders = () => {
   const [meal, setMeal] = React.useState([]);
   const [mealModal, setMealModal] = React.useState(false);
+  //State for Delete Order Id
   const [productId, setProductId] = React.useState("");
+  //Sate for rejected Order
+  const [rejected, setRejected] = React.useState(false);
+  //State for Accepted Order
+  const [accepted, setAccepted] = React.useState(false);
+  //State For Refresh the page
   const [refresh, setRefresh] = React.useState(false);
+  //Notification for success
   const notifySuccess = (success) =>
     toast.success(success, {
       position: "bottom-right",
@@ -29,6 +36,7 @@ const TotalOrders = () => {
       progress: undefined,
       theme: "dark",
     });
+  //Notification for error
   const notifyError = (error) =>
     toast.success(error, {
       position: "bottom-right",
@@ -58,16 +66,48 @@ const TotalOrders = () => {
     setMealModal(true);
   };
   //Delete Order from the database
-  const deletedOrder = async (id) => {
+  const deletedOrder = async () => {
     try {
       const res = await axios.delete(`${BASE_URL}/delcheckout/${productId}`);
       notifySuccess("Order Deleted Successfully!!");
       setMealModal(false);
       setRefresh(!refresh);
     } catch (error) {
+      notifyError("Order Not Deleted!!");
       console.log("error", error);
     }
   };
+  // Accepted Order Function
+  const acceptedOrder = async (id) => {
+    try {
+      const res = await axios.post(`${BASE_URL}/acceptedOrder/${id}`);
+      console.log("res.data", res.data);
+      notifySuccess("Order Accepted Successfully!!");
+      setRefresh(!refresh);
+    } catch (error) {
+      notifyError("Order Not Accepted!!");
+      console.log("error", error);
+    }
+  };
+
+  //setId for rejected Order
+  const setIdForRejectedOrder = (id) => {
+    setProductId(id);
+    setRejected(true);
+  };
+  // Rejected Order Function
+  const rejectedOrder = async (id) => {
+    try {
+      const res = await axios.post(`${BASE_URL}/rejectedOrder/${id}`);
+      console.log("res.data", res.data);
+      notifySuccess("Order Recjected Successfully!!");
+    } catch (error) {
+      notifyError("Order Not Rejected!!");
+      console.log("error", error);
+    }
+  };
+
+  //UseEffect to get Orders
   useEffect(() => {
     getOrders();
   }, [refresh]);
@@ -101,8 +141,7 @@ const TotalOrders = () => {
             Yes
           </button>
         </ModalHeader>
-        <ModalBody>
-        </ModalBody>
+        <ModalBody></ModalBody>
       </Modal>
       <div
         style={{
@@ -113,18 +152,18 @@ const TotalOrders = () => {
           boxSizing: "border-box",
         }}
       >
-           <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <Card
           style={{
             width: "100%",
@@ -234,7 +273,7 @@ const TotalOrders = () => {
                     const createdAtDate = e.createdAt.split("T")[0];
                     const updatedAtDate = e.updatedAt.split("T")[0];
                     return (
-                      <tr>
+                      <tr key={i}>
                         <th scope="row" className="pt-3">
                           {i + 1}
                         </th>
@@ -245,8 +284,16 @@ const TotalOrders = () => {
                         <td className="pt-3">{createdAtDate}</td>
                         <td className="pt-3">{updatedAtDate}</td>
                         <td className="pt-2">
-                          <button className="btn btn-success">Accepted</button>
-                          <button className="btn btn-danger ms-1">
+                          <button
+                            onClick={() => acceptedOrder(e._id)}
+                            className="btn btn-success"
+                          >
+                            Accepted
+                          </button>
+                          <button
+                            onClick={() => rejectedOrder(e._id)}
+                            className="btn btn-danger ms-1"
+                          >
                             Rejected
                           </button>
                         </td>
