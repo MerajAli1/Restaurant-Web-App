@@ -87,7 +87,7 @@ const CardComponent = () => {
                     Illum, laudantium?
                   </p>
                   <div className="d-flex justify-content-around pb-5 pt-4 ">
-                    <h3 className="pt-2 fw-bold">$12.05</h3>
+                    <h3 className="pt-2 fw-bold">$12.00</h3>
                     <button
                       className="button"
                       onClick={() => dispatch(addCart(data))}
