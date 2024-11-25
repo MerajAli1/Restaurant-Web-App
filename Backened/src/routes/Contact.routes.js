@@ -6,9 +6,11 @@ import {
 } from "../controllers/Contact.controller.js";
 
 const router = Router();
-
+//Integrated On frontend ContactForm.jsx Component
 router.route("/message").post(ContactMessage);
+//Integrated On frontend Notification.jsx Component
 router.route("/getMessage").get(GetContactMessage);
+
 router.route("/deleteMessage/:id").delete(DeleContactMessage);
 
 export default router;

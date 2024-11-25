@@ -5,7 +5,7 @@ import CallIcon from "@mui/icons-material/Call";
 import { TextField } from "@mui/material";
 import Navbar from "./Navbar";
 import axios from "axios";
-// import { BASE_URL } from "../Api/api";
+import { BASE_URL } from "../Base_URL/BASE_URL";
 import Footer from "./Footer";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -26,7 +26,7 @@ const ContactForm = () => {
         message,
       };
       try {
-        const response = await axios.post(`${BASE_URL}/contact`, Message);
+        const response = await axios.post(`${BASE_URL}/message`, Message);
         console.log(response.data);
         notifySuccess();
         // alert("Message sent successfully");

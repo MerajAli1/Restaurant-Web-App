@@ -113,7 +113,7 @@ const TotalOrders = () => {
   }, [refresh]);
   return (
     <>
-      {/* Add Item modal */}
+      {/* Are you sure modal */}
       <Modal
         size="md"
         isOpen={mealModal}
