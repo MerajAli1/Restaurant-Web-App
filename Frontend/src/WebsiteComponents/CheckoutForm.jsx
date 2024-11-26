@@ -50,60 +50,62 @@ const CheckoutForm = () => {
 
   const OrderPlaced = async (e) => {
     e.preventDefault();
-    if (
-      !(
-        address &&
-        firstName &&
-        lastName &&
-        email &&
-        phoneNumber &&
-        message &&
-        selectedValue
-      )
-    ) {
-      notifyError("🦄 Fill all the fields..");
-      return;
-    } else {
-      const data = {
-        address,
-        email,
-        firstName,
-        lastName,
-        phoneNumber,
-        message,
-        paymentMethod: selectedValue,
-        orderItems: addToCart.map((orderItem) => ({
-          id: orderItem.id,
-          quantity: orderItem.count,
-          title: orderItem.title,
-          // abhi jo api lgi hwe hy usmy price nhi hy
-          // price: orderItem.price,
-        })),
-      };
+    console.log("Order Placed");
+    
+    // if (
+    //   !(
+    //     address &&
+    //     firstName &&
+    //     lastName &&
+    //     email &&
+    //     phoneNumber &&
+    //     message &&
+    //     selectedValue
+    //   )
+    // ) {
+    //   notifyError("🦄 Fill all the fields..");
+    //   return;
+    // } else {
+    //   const data = {
+    //     address,
+    //     email,
+    //     firstName,
+    //     lastName,
+    //     phoneNumber,
+    //     message,
+    //     paymentMethod: selectedValue,
+    //     orderItems: addToCart.map((orderItem) => ({
+    //       id: orderItem.id,
+    //       quantity: orderItem.count,
+    //       title: orderItem.title,
+    //       // abhi jo api lgi hwe hy usmy price nhi hy
+    //       // price: orderItem.price,
+    //     })),
+    //   };
 
-      console.log("data", data);
-    }
-    try {
-      const res = await axios.post(`${BASE_URL}/checkout`, {
-        address: address,
-        email: email,
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber,
-        message: message,
-        paymentMethod: selectedValue,
-        orderItems: addToCart.map((orderItem) => ({
-          id: orderItem.id,
-          quantity: orderItem.count,
-          title: orderItem.title,
-        })),
-      });
-      console.log("res", res);
-      notifySuccess("🦄 Your Order Placed Successfully");
-    } catch (error) {
-      console.log("error", error);
-      notifyError("🦄 Failed to place order");
-    }
+    //   console.log("data", data);
+    // }
+    // try {
+    //   const res = await axios.post(`${BASE_URL}/checkout`, {
+    //     address: address,
+    //     email: email,
+    //     firstName: firstName,
+    //     lastName: lastName,
+    //     phoneNumber: phoneNumber,
+    //     message: message,
+    //     paymentMethod: selectedValue,
+    //     orderItems: addToCart.map((orderItem) => ({
+    //       id: orderItem.id,
+    //       quantity: orderItem.count,
+    //       title: orderItem.title,
+    //     })),
+    //   });
+    //   console.log("res", res);
+    //   notifySuccess("🦄 Your Order Placed Successfully");
+    // } catch (error) {
+    //   console.log("error", error);
+    //   notifyError("🦄 Failed to place order");
+    // }
   };
 
   // Handler function to update state when radio button is selected
@@ -199,6 +201,8 @@ const CheckoutForm = () => {
 
           {addToCart.length !== 0 ? (
             addToCart.map((data, index) => {
+              console.log(data, "data");
+              
               return (
                 <>
                   <div key={index}>
@@ -206,22 +210,23 @@ const CheckoutForm = () => {
                       <h5 className="ms-4">
                         {data.title.substring(0, 9)} (Qty : {data.count})
                       </h5>
-                      <h5 className="me-4">$12.05</h5>
+                      <h5 className="me-4">{data?.mealPrice ?data?.mealPrice:"None"}</h5>
                     </div>
                     <div className="d-flex justify-content-between playfair-display">
                       <h5 className="ms-4">Shipping</h5>
-                      <h5 className="me-4">$12.05</h5>
+                      <h5 className="me-4">0</h5>
                     </div>
                     <div className="d-flex justify-content-between playfair-display">
                       <h5 className="ms-4">Tax</h5>
-                      <h5 className="me-4">$12.05</h5>
+                      <h5 className="me-4">0</h5>
                     </div>
                     <hr />
                     <div className="mt-3 d-flex justify-content-between jacques-francois-shadow-regular">
                       <h4 className="ms-4 fw-bold">Total</h4>
-                      <h4 className="me-4 fw-bold">$12.05</h4>
+                      <h4 className="me-4 fw-bold">{data?.mealPrice ?data?.mealPrice:"None"}</h4>
                     </div>
                   </div>
+                    
                 </>
               );
             })
