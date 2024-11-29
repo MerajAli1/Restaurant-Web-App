@@ -15,24 +15,27 @@ const AcceptedOrder = asyncHandler(async (req, res) => {
     if (!AccOrder) {
       throw new ApiError(400, "Order not found..!");
     }
+
+    // Check if orderItems exists and has at least one item
+    if (!AccOrder.orderItems || AccOrder.orderItems.length === 0) {
+      throw new ApiError(400, "No items found in the order..!");
+    }
+
     const sub = "Order Accepted";
-    const msg = `Dear ${AccOrder.firstName} ${
-      AccOrder.lastName
-    },\n\nYour order of ${
-      AccOrder.addToCart[0].name // Assuming `addToCart` is an array and accessing the first item
-    } has been confirmed. \n\nThank you for choosing us!\n\nBest regards,\nFresco Restaurant`;
+    const msg = `Dear ${AccOrder.firstName} ${AccOrder.lastName},\n\nYour order of ${AccOrder.orderItems[0].name} has been confirmed. \n\nThank you for choosing us!\n\nBest regards,\nFresco Restaurant`;
     sendMail(AccOrder.email, sub, msg);
+
     return res
       .status(201)
       .json(
         new ApiResponse(
           200,
           "success",
-          "The email has sent successfully for accepted order..."
+          "The email has been sent successfully for the accepted order..."
         )
       );
   } catch (error) {
-    res.send(error.message);
+    res.status(500).send("Error from API: " + error.message);
   }
 });
 const RejectedOrder = asyncHandler(async (req, res) => {
@@ -49,7 +52,7 @@ const RejectedOrder = asyncHandler(async (req, res) => {
     const msg = `Dear ${RejOrder.firstName} ${
       RejOrder.lastName
     },\n\nYour order of ${
-      RejOrder.addToCart[0].name // Assuming `addToCart` is an array and accessing the first item
+      RejOrder.orderItems[0].name // Assuming `orderItems` is an array and accessing the first item
     } has been rejected due to some issues. \n\nThank you for choosing us!\n\nBest regards,\nFresco Restaurant`;
     sendMail(RejOrder.email, sub, msg);
 
