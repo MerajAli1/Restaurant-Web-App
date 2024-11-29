@@ -4,54 +4,40 @@ import Popular from "../Images/Popular.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProduct } from "../Store/ProductSlice";
 import { addCart } from "../Store/AddToCart";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const CardComponent = () => {
   const dispatch = useDispatch();
   const { allProduct } = useSelector((state) => state.productReducer);
   // console.log(allProduct);
   // console.log(error);
 
+  const notifySuccess = (success) =>
+    toast.success(success, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  const notifyError = (error) =>
+    toast.error(error, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
   useEffect(() => {
     dispatch(fetchProduct());
   }, []);
-  // const CardData = [
-  //   {
-  //     image: Popular,
-  //     title: "Spaghetti",
-  //     text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem doloremque, sequi natus non assumenda velit.",
-  //     price: "12.05",
-  //   },
-  //   {
-  //     image: Popular,
-  //     title: "Spaghetti",
-  //     text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem doloremque, sequi natus non assumenda velit.",
-  //     price: "12.05",
-  //   },
-  //   {
-  //     image: Popular,
-  //     title: "Spaghetti",
-  //     text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem doloremque, sequi natus non assumenda velit.",
-  //     price: "12.05",
-  //   },
-  //   {
-  //     image: Popular,
-  //     title: "Spaghetti",
-  //     text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem doloremque, sequi natus non assumenda velit.",
-  //     price: "12.05",
-  //   },
-  //   {
-  //     image: Popular,
-  //     title: "Spaghetti",
-  //     text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem doloremque, sequi natus non assumenda velit.",
-  //     price: "12.05",
-  //   },
-  //   {
-  //     image: Popular,
-  //     title: "Spaghetti",
-  //     text: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptatem doloremque, sequi natus non assumenda velit.",
-  //     price: "12.05",
-  //   },
-  // ];
 
   return (
     <div className="container">
@@ -90,13 +76,32 @@ const CardComponent = () => {
                     <h3 className="pt-2 fw-bold">$12.00</h3>
                     <button
                       className="button"
-                      onClick={() => dispatch(addCart(data))}
+                      onClick={() => {
+                        try {
+                          dispatch(addCart(data)); // Add item to the cart
+                          notifySuccess("Item added successfully"); // Show success notification
+                        } catch (error) {
+                          notifyError("Something went wrong"); // Show error notification if an error occurs
+                        }
+                      }}
                     >
                       Add To Cart
                     </button>
                   </div>
                 </div>
               </div>
+              <ToastContainer
+                position="bottom-right"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+              />
             </div>
           );
         })}

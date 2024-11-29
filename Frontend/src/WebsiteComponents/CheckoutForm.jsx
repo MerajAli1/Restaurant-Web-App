@@ -247,6 +247,8 @@ const CheckoutForm = () => {
           )}
         </ModalBody>
       </Modal>
+
+      {/* checkout form */}
       {addToCart.length !== 0 ? (
         <Card
           style={{

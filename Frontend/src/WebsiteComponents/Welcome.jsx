@@ -5,14 +5,7 @@ const Welcome = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div
-      // style={{
-      //   height: "120vh",
-      //   backgroundImage: `url("https://www.baronmiedzyzdroje.pl/wp-content/uploads/2019/04/background-1.png")`,
-      //   backgroundSize: "cover",
-      //   backgroundAttachment: "fixed",
-      // }}
-      >
+      <div data-aos="flip-left">
         <div
           className="text-center"
           style={{

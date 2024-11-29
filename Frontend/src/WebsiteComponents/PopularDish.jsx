@@ -9,12 +9,12 @@ const PopularDish = () => {
     <>
       <div className="container" style={{ marginTop: "200px" }}>
         <section className="row">
-          <div className="col-12 col-md-6">
+          <div className="col-12 col-md-6" data-aos="fade-right">
             <div>
               <img src={Popular} height={450} width={450} alt="" />
             </div>
           </div>
-          <div className="col-12 col-md-6 ps-3">
+          <div className="col-12 col-md-6 ps-3" data-aos="fade-left">
             <div>
               <h1
                 className="jacques-francois-shadow-regular"
