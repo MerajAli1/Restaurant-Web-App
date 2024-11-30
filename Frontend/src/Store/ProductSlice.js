@@ -9,19 +9,16 @@ const initialState = {
 
 const options = {
   method: "GET",
-  url: "https://chinese-food-db.p.rapidapi.com/",
-  headers: {
-    "x-rapidapi-key": "ac4aab79f1msh5bbc81a078dd7d2p1993eajsn2de66297c5fe",
-    "x-rapidapi-host": "chinese-food-db.p.rapidapi.com",
-  },
+  url: "http://localhost:5000/api/v1/getMeal",
 };
+
 export const fetchProduct = createAsyncThunk(
   "product/fetch",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.request(options);
-      //   console.log(response.data);
-      return response.data;
+      console.log("API Response:", response.data.data); // Log the response
+      return response.data.data // Ensure the response is an array
     } catch (error) {
       console.log(error.message);
       return rejectWithValue(error.message);
@@ -41,7 +38,7 @@ const productSlice = createSlice({
     builder.addCase(fetchProduct.fulfilled, (state, action) => {
       state.isLoading = false;
       state.allProduct = action.payload;
-      console.log("fulfilled");
+      console.log("fulfilled", action.payload);
     });
     builder.addCase(fetchProduct.rejected, (state) => {
       state.isLoading = false;
