@@ -14,7 +14,7 @@ import { BASE_URL } from "../Base_URL/BASE_URL";
 const CheckoutForm = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const { addToCart } = useSelector((state) => state.addToCartReducer);
-  //   console.log(addToCart, "stripe");
+  // console.log(addToCart, "stripe");
 
   const [address, setAddress] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -51,61 +51,63 @@ const CheckoutForm = () => {
   const OrderPlaced = async (e) => {
     e.preventDefault();
     console.log("Order Placed");
-    
-    // if (
-    //   !(
-    //     address &&
-    //     firstName &&
-    //     lastName &&
-    //     email &&
-    //     phoneNumber &&
-    //     message &&
-    //     selectedValue
-    //   )
-    // ) {
-    //   notifyError("🦄 Fill all the fields..");
-    //   return;
-    // } else {
-    //   const data = {
-    //     address,
-    //     email,
-    //     firstName,
-    //     lastName,
-    //     phoneNumber,
-    //     message,
-    //     paymentMethod: selectedValue,
-    //     orderItems: addToCart.map((orderItem) => ({
-    //       id: orderItem.id,
-    //       quantity: orderItem.count,
-    //       title: orderItem.title,
-    //       // abhi jo api lgi hwe hy usmy price nhi hy
-    //       // price: orderItem.price,
-    //     })),
-    //   };
 
-    //   console.log("data", data);
-    // }
-    // try {
-    //   const res = await axios.post(`${BASE_URL}/checkout`, {
-    //     address: address,
-    //     email: email,
-    //     firstName: firstName,
-    //     lastName: lastName,
-    //     phoneNumber: phoneNumber,
-    //     message: message,
-    //     paymentMethod: selectedValue,
-    //     orderItems: addToCart.map((orderItem) => ({
-    //       id: orderItem.id,
-    //       quantity: orderItem.count,
-    //       title: orderItem.title,
-    //     })),
-    //   });
-    //   console.log("res", res);
-    //   notifySuccess("🦄 Your Order Placed Successfully");
-    // } catch (error) {
-    //   console.log("error", error);
-    //   notifyError("🦄 Failed to place order");
-    // }
+    if (
+      !(
+        address &&
+        firstName &&
+        lastName &&
+        email &&
+        phoneNumber &&
+        message &&
+        selectedValue
+      )
+    ) {
+      notifyError("🦄 Fill all the fields..");
+      return;
+    } else {
+      const data = {
+        address,
+        email,
+        firstName,
+        lastName,
+        phoneNumber,
+        message,
+        paymentMethod: selectedValue,
+        orderItems: addToCart.map((orderItem) => ({
+          id: orderItem.meal_id,
+          quantity: orderItem.count,
+          title: orderItem.mealName,
+          price: orderItem.Price,
+
+          // abhi jo api lgi hwe hy usmy price nhi hy
+          // price: orderItem.price,
+        })),
+      };
+
+      console.log("data", data);
+    }
+    try {
+      const res = await axios.post(`${BASE_URL}/checkout`, {
+        address: address,
+        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
+        message: message,
+        paymentMethod: selectedValue,
+        orderItems: addToCart.map((orderItem) => ({
+          quantity: orderItem.count,
+          title: orderItem.mealName,
+          price: orderItem.Price,
+        })),
+      });
+      console.log("res", res);
+      notifySuccess("🦄 Your Order Placed Successfully");
+    } catch (error) {
+      console.log("error", error);
+      notifyError("🦄 Failed to place order");
+    }
   };
 
   // Handler function to update state when radio button is selected
@@ -175,7 +177,12 @@ const CheckoutForm = () => {
       // console.log("Cash on Delivery:", data);
     }
   };
-
+  let subTotal = 0;
+  if (addToCart.length > 0) {
+    addToCart.forEach((data) => {
+      subTotal += data.Price * data.count;
+    });
+  }
   return (
     <>
       <Modal size="md" isOpen={summary} toggle={() => setSummary(!summary)}>
@@ -201,32 +208,34 @@ const CheckoutForm = () => {
 
           {addToCart.length !== 0 ? (
             addToCart.map((data, index) => {
-              console.log(data, "data");
-              
+              // console.log(data, "data");
+
               return (
                 <>
                   <div key={index}>
                     <div className="mt-5 d-flex justify-content-between playfair-display">
                       <h5 className="ms-4">
-                        {data.title.substring(0, 9)} (Qty : {data.count})
+                        {data.mealName} (Qty : {data.count})
                       </h5>
-                      <h5 className="me-4">{data?.mealPrice ?data?.mealPrice:"None"}</h5>
+                      <h5 className="me-4">{data.Price * data.count}.00$</h5>
                     </div>
                     <div className="d-flex justify-content-between playfair-display">
                       <h5 className="ms-4">Shipping</h5>
-                      <h5 className="me-4">0</h5>
+                      <h5 className="me-4">0.00$</h5>
                     </div>
                     <div className="d-flex justify-content-between playfair-display">
                       <h5 className="ms-4">Tax</h5>
-                      <h5 className="me-4">0</h5>
+                      <h5 className="me-4">0.00$</h5>
                     </div>
                     <hr />
                     <div className="mt-3 d-flex justify-content-between jacques-francois-shadow-regular">
                       <h4 className="ms-4 fw-bold">Total</h4>
-                      <h4 className="me-4 fw-bold">{data?.mealPrice ?data?.mealPrice:"None"}</h4>
+                      <h4 className="me-4 fw-bold">
+                        {/* {data?.Price ? data?.Price : "None"} */}
+                        {subTotal}.00$
+                      </h4>
                     </div>
                   </div>
-                    
                 </>
               );
             })

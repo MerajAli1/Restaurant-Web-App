@@ -43,6 +43,7 @@ const MealCard = asyncHandler(async (req, res) => {
     Price: mealPrice,
     image: image,
   });
+  // console.log(meal, "meal");
 
   //Sending to Frontend
   return res

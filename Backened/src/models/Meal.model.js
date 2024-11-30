@@ -10,10 +10,10 @@ const MealSchema = new mongoose.Schema(
     meal_category: {
       type: String,
     },
-    mealTitle: {
+    mealName: {
       type: String,
     },
-    mealDescription: {
+    Description: {
       type: String,
     },
     Price: {

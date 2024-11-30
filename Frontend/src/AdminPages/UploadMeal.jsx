@@ -688,7 +688,7 @@ const UploadMeal = () => {
                           />
                         </td>
                         <td className="pt-4">
-                          {e?.meal_category ? e?.meal_category : "None"}
+                          {e?.mealName ? e?.mealName : "None"}
                         </td>
                         <td className="pt-4">
                           {e?.meal_category ? e?.meal_category : "None"}

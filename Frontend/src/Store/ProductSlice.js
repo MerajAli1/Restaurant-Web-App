@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASE_URL } from "../Base_URL/BASE_URL";
 
 const initialState = {
   allProduct: [],
@@ -18,13 +19,26 @@ export const fetchProduct = createAsyncThunk(
     try {
       const response = await axios.request(options);
       console.log("API Response:", response.data.data); // Log the response
-      return response.data.data // Ensure the response is an array
+      return response.data.data; // Ensure the response is an array
     } catch (error) {
       console.log(error.message);
       return rejectWithValue(error.message);
     }
   }
 );
+
+// export const fetchProduct = createAsyncThunk(
+//   "products/fetch",
+//   async (_, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.get(`${BASE_URL}/getMeal`);
+//       return response.data;
+//     } catch (error) {
+//       console.log(error);
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
 
 const productSlice = createSlice({
   name: "products",

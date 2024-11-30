@@ -65,17 +65,20 @@ const CardComponent = () => {
                       alt={data.title || "No Title"}
                     />
                     <h2 className="jacques-francois-shadow-regular pt-4">
-                      {data.title ? data.title.substring(0, 14) + "..." : "No Title"}
+                      {data.mealName
+                        ? data.mealName.substring(0, 14) + "..."
+                        : "No Title"}
                     </h2>
                     <p
                       className="pt-3"
                       style={{ fontSize: "17px", fontWeight: "lighter" }}
                     >
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                      Illum, laudantium?
+                      {/* Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Illum, laudantium? */}
+                      {data.Description}
                     </p>
                     <div className="d-flex justify-content-around pb-5 pt-4 ">
-                      <h3 className="pt-2 fw-bold">$12.00</h3>
+                      <h3 className="pt-2 fw-bold">${data.Price}.00</h3>
                       <button
                         className="button"
                         onClick={() => {
