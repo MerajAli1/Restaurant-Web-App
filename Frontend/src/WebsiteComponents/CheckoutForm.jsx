@@ -14,7 +14,7 @@ import { BASE_URL } from "../Base_URL/BASE_URL";
 const CheckoutForm = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const { addToCart } = useSelector((state) => state.addToCartReducer);
-  // console.log(addToCart, "stripe");
+  console.log(addToCart, "stripe");
 
   const [address, setAddress] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -148,9 +148,8 @@ const CheckoutForm = () => {
         const headers = {
           "Content-Type": "application/json",
         };
-
-        // Corrected the port number
-        const response = await fetch("http://localhost:9000/payment", {
+        //check the connection MERAJ
+        const response = await fetch(`${BASE_URL}/online-payment`, {
           method: "POST",
           headers: headers,
           body: JSON.stringify(body),
@@ -174,7 +173,6 @@ const CheckoutForm = () => {
       }
     } else if (selectedValue === "Cash On Delivery") {
       setSummary(true);
-      // console.log("Cash on Delivery:", data);
     }
   };
   let subTotal = 0;

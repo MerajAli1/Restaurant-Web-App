@@ -3,7 +3,14 @@ import { Checkout } from "../models/Checkout.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
+// const stripe = require("stripe")(
+//   "sk_test_51Q47vSG124FIRgpMYy2XfP1PthkORGJdpoYLHnLtq8YZsD3YkyckDXIh2cKas6JwxGvHgVU3oFuHfunyaK5qUqtL00cIlfws6N"
+// );
+import Stripe from "stripe";
 
+const stripe = new Stripe(
+  "sk_test_51Q47vSG124FIRgpMYy2XfP1PthkORGJdpoYLHnLtq8YZsD3YkyckDXIh2cKas6JwxGvHgVU3oFuHfunyaK5qUqtL00cIlfws6N"
+);
 const CheckoutData = asyncHandler(async (req, res) => {
   const {
     firstName,
@@ -115,5 +122,35 @@ const OrderTransfer = asyncHandler(async (req, res) => {
     throw new ApiError(500, error);
   }
 });
+const paymentMethod = asyncHandler(async (req, res) => {
+  const { products } = req.body;
 
-export { CheckoutData, GetCheckoutData, DelCheckoutData, OrderTransfer };
+  const lineItems = products.map((prd) => ({
+    price_data: {
+      currency: "inr",
+      product_data: {
+        name: prd.mealName, // Use 'prd' to access the mapped object
+      },
+      unit_amount: prd.Price * 100, // Convert price to the smallest currency unit
+    },
+    quantity: prd.count, // Quantity of the product
+  }));
+
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    line_items: lineItems,
+    mode: "payment",
+    success_url: "http://localhost:5000/success", //frontend url here
+    cancel_url: "http://localhost:5000/error", // frontend url here
+  });
+
+  res.json({ id: session.id });
+});
+
+export {
+  CheckoutData,
+  GetCheckoutData,
+  DelCheckoutData,
+  OrderTransfer,
+  paymentMethod,
+};

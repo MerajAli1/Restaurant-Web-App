@@ -14,5 +14,6 @@ router.route("/getcheckout").get(GetCheckoutData);
 // Integrated on Frontend TotalOrders.js Component
 router.route("/delcheckout/:id").delete(DelCheckoutData);
 router.route("/orderTransfer/:id").delete(OrderTransfer);
+router.route("/online-payment").delete(OrderTransfer);
 
 export default router;

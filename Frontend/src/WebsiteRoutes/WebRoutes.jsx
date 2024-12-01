@@ -8,6 +8,8 @@ import Contact from "../WebsitePages/Contact";
 import Checkout from "../WebsitePages/Checkout";
 import AdminForm from "../AdminPages/AdminForm";
 import AdminDashboard from "../AdminPages/AdminDashboard";
+import SuccessCheckout from "../WebsiteComponents/SuccessCheckout";
+import ErrorCheckout from "../WebsiteComponents/ErrorCheckout";
 
 const WebRoutes = () => {
   return (
@@ -20,8 +22,10 @@ const WebRoutes = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/admin" element={<AdminForm />} />
-        <Route element={<AuthProtection/>}>
-        <Route path="/adminPortal/*" element={<AdminDashboard />} />
+        <Route path="/success" element={<SuccessCheckout />} />
+        <Route path="/error" element={<ErrorCheckout />} />
+        <Route element={<AuthProtection />}>
+          <Route path="/adminPortal/*" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </>
@@ -31,9 +35,7 @@ const WebRoutes = () => {
 // Auth Protection
 const AuthProtection = () => {
   return (
-    <>
-        {localStorage.getItem("uid") ? <Outlet /> : <Navigate to={"/admin"} />}
-    </>
-)
+    <>{localStorage.getItem("uid") ? <Outlet /> : <Navigate to={"/admin"} />}</>
+  );
 };
 export default WebRoutes;
