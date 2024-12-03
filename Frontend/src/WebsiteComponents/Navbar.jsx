@@ -57,8 +57,8 @@ const Navbar = () => {
                           <div>
                             <h5 className="pt-1 text-center fw-bold">
                               {data.count}
-                              <span className="fs-5 fw-light"> X</span> 12.05 ={" "}
-                              {12.05 * data.count}
+                              <span className="fs-5 fw-light"> X</span>{" "}
+                              {data.Price} = {data.Price * data.count}
                             </h5>
                           </div>
                           <div className="text-center">

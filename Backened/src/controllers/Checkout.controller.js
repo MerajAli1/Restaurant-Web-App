@@ -124,14 +124,14 @@ const OrderTransfer = asyncHandler(async (req, res) => {
 });
 const paymentMethod = asyncHandler(async (req, res) => {
   const { products } = req.body;
-
+  console.log(products);
   const lineItems = products.map((prd) => ({
     price_data: {
-      currency: "inr",
+      currency: "usd",
       product_data: {
         name: prd.mealName, // Use 'prd' to access the mapped object
       },
-      unit_amount: prd.Price * 100, // Convert price to the smallest currency unit
+      unit_amount: prd.Price, // Convert price to the smallest currency unit
     },
     quantity: prd.count, // Quantity of the product
   }));
@@ -140,8 +140,8 @@ const paymentMethod = asyncHandler(async (req, res) => {
     payment_method_types: ["card"],
     line_items: lineItems,
     mode: "payment",
-    success_url: "http://localhost:5000/success", //frontend url here
-    cancel_url: "http://localhost:5000/error", // frontend url here
+    success_url: "http://localhost:5173/success", //frontend url here
+    cancel_url: "http://localhost:5173/error", // frontend url here
   });
 
   res.json({ id: session.id });

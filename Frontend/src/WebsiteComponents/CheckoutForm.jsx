@@ -14,7 +14,7 @@ import { BASE_URL } from "../Base_URL/BASE_URL";
 const CheckoutForm = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const { addToCart } = useSelector((state) => state.addToCartReducer);
-  console.log(addToCart, "stripe");
+  // console.log(addToCart, "stripe");
 
   const [address, setAddress] = useState("");
   const [firstName, setFirstName] = useState("");
