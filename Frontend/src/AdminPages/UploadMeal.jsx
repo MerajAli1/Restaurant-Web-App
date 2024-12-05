@@ -23,6 +23,7 @@ const UploadMeal = () => {
   const [updateMeal, setUpdateMeal] = useState(false);
   const [deleteMeal, setDeleteMeal] = useState(false);
   const [deleteId, setDeleteId] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   //states for form
   const [mealCategory, setMealCategory] = useState("");
   const [mealTitle, setMealTitle] = useState("");
@@ -70,7 +71,9 @@ const UploadMeal = () => {
       )
     ) {
       notifyError("🦄 Fill all the fields!");
+      return;
     }
+    setIsLoading(true);
     let mealData = {
       mealCategory,
       mealDescription,
@@ -102,6 +105,8 @@ const UploadMeal = () => {
     } catch (error) {
       console.log("error", error);
       notifyError("🦄 Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -139,26 +144,19 @@ const UploadMeal = () => {
       notifyError("🦄 Fill all the fields!");
       return;
     }
-    let mealData = {
-      mealCategory,
-      mealDescription,
-      mealImage,
-      mealPrice,
-      meal_id,
-      mealTitle,
-    };
-    console.log("mealData", mealData);
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("mealCategory", mealCategory);
+    formData.append("mealDescription", mealDescription);
+    formData.append("image", mealImage);
+    formData.append("mealPrice", mealPrice);
+    formData.append("meal_id", meal_id);
+    formData.append("mealTitle", mealTitle);
+
     try {
       const res = await axios.put(
         `${BASE_URL}/updateMeal/${id}`,
-        {
-          mealCategory: mealCategory,
-          mealDescription: mealDescription,
-          image: mealImage,
-          mealPrice: mealPrice,
-          meal_id: meal_id,
-          mealTitle: mealTitle,
-        },
+        formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
@@ -172,6 +170,8 @@ const UploadMeal = () => {
     } catch (error) {
       console.log("error", error);
       notifyError("🦄 Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -181,6 +181,7 @@ const UploadMeal = () => {
   };
 
   const handleDelete = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.delete(`${BASE_URL}/delMeal/${deleteId}`);
       console.log("res", res);
@@ -190,6 +191,8 @@ const UploadMeal = () => {
     } catch (error) {
       console.log("error", error);
       notifyError("🦄 Something went wrong!");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -396,15 +399,9 @@ const UploadMeal = () => {
               >
                 <button
                   className="button px-5"
-                  //   onClick={productUpload}
-                  //   disabled={isLoading}
+                  disabled={isLoading}
                 >
-                  {/* {isLoading ? (
-                        <CircularProgress size={24} color="inherit" />
-                      ) : (
-                        "upload"
-                      )} */}
-                  Upload
+                  {isLoading ? <CircularProgress size={24} color="inherit" /> : "Upload"}
                 </button>
               </Grid>
             </Grid>
@@ -625,15 +622,9 @@ const UploadMeal = () => {
               >
                 <button
                   className="button px-5"
-                  //   onClick={productUpload}
-                  //   disabled={isLoading}
+                  disabled={isLoading}
                 >
-                  {/* {isLoading ? (
-                        <CircularProgress size={24} color="inherit" />
-                      ) : (
-                        "upload"
-                      )} */}
-                  Upload
+                  {isLoading ? <CircularProgress size={24} color="inherit" /> : "Upload"}
                 </button>
               </Grid>
             </Grid>
@@ -672,8 +663,8 @@ const UploadMeal = () => {
         <ModalBody>
           <p>Are you sure you want to delete this item?</p>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <button className="button px-5" onClick={handleDelete}>
-              Yes
+            <button className="button px-5" onClick={handleDelete} disabled={isLoading}>
+              {isLoading ? <CircularProgress size={24} color="inherit" /> : "Yes"}
             </button>
             <button className="button px-5" onClick={() => setDeleteMeal(false)}>
               No

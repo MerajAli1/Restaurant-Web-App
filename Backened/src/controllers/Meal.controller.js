@@ -61,8 +61,23 @@ const GetMealCard = asyncHandler(async (req, res) => {
 
 const UpdateMealCard = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  const update = req.body;
-  const MealUpdate = await Meal.findByIdAndUpdate(id, update, { new: true });
+  const { mealCategory, mealTitle, mealDescription, mealPrice, meal_id } = req.body;
+
+  const updateData = {
+    meal_category: mealCategory,
+    mealName: mealTitle,
+    Description: mealDescription,
+    Price: mealPrice,
+    meal_id: meal_id,
+  };
+
+  if (req.files && req.files.image) {
+    const imageLocalPath = req.files.image[0].path;
+    const image = await uploadOnCloudinary(imageLocalPath);
+    updateData.image = image;
+  }
+
+  const MealUpdate = await Meal.findByIdAndUpdate(id, updateData, { new: true });
 
   return res
     .status(200)
