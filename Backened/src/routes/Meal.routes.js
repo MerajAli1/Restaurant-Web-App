@@ -16,6 +16,8 @@ router
 
 //Integrated On Frontend UploadMeal.jsx Component
 router.route("/getMeal").get(GetMealCard);
-router.route("/updateMeal:id").put(UpdateMealCard);
-router.route("/delMeal").delete(DeleteMealCard);
+
+router.route("/updateMeal/:id").put(UpdateMealCard);
+//Integrated On Frontend UploadMeal.jsx Component
+router.route("/delMeal/:id").delete(DeleteMealCard);
 export default router;

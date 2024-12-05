@@ -10,7 +10,7 @@ const router = Router();
 router.route("/message").post(ContactMessage);
 //Integrated On frontend Notification.jsx Component
 router.route("/getMessage").get(GetContactMessage);
-
+//Integrated On frontend Notification.jsx Component
 router.route("/deleteMessage/:id").delete(DeleContactMessage);
 
 export default router;

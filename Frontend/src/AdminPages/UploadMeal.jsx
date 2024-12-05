@@ -21,12 +21,15 @@ import axios from "axios";
 const UploadMeal = () => {
   const [meal, setMeal] = useState(false);
   const [updateMeal, setUpdateMeal] = useState(false);
+  const [deleteMeal, setDeleteMeal] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
   //states for form
   const [mealCategory, setMealCategory] = useState("");
   const [mealTitle, setMealTitle] = useState("");
   const [mealDescription, setMealDescription] = useState("");
   const [mealPrice, setMealPrice] = useState("");
   const [meal_id, setMeal_id] = useState("");
+  const [id, setId] = useState("");
   const [mealImage, setMealImage] = useState("");
   const [mealData, setMealData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -116,6 +119,79 @@ const UploadMeal = () => {
   const filteredMeals = mealData.filter((meal) =>
     meal.mealName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const openEditModal = (meal) => {
+    setMealCategory(meal.mealCategory);
+    setMealTitle(meal.mealName);
+    setMealDescription(meal.mealDescription);
+    setMealPrice(meal.mealPrice);
+    setMeal_id(meal.meal_id);
+    setMealImage(meal.image);
+    setId(meal._id);
+    setUpdateMeal(true);
+  };
+
+  const updateProduct = async (e) => {
+    e.preventDefault();
+    if (
+      !(mealCategory && mealTitle && mealDescription && mealPrice && meal_id && mealImage)
+    ) {
+      notifyError("🦄 Fill all the fields!");
+      return;
+    }
+    let mealData = {
+      mealCategory,
+      mealDescription,
+      mealImage,
+      mealPrice,
+      meal_id,
+      mealTitle,
+    };
+    console.log("mealData", mealData);
+    try {
+      const res = await axios.put(
+        `${BASE_URL}/updateMeal/${id}`,
+        {
+          mealCategory: mealCategory,
+          mealDescription: mealDescription,
+          image: mealImage,
+          mealPrice: mealPrice,
+          meal_id: meal_id,
+          mealTitle: mealTitle,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("res", res);
+      notifySuccess("🦄 Your item updated Successfully");
+      setUpdateMeal(false);
+      getProduct();
+    } catch (error) {
+      console.log("error", error);
+      notifyError("🦄 Something went wrong!");
+    }
+  };
+
+  const confirmDelete = (id) => {
+    setDeleteId(id);
+    setDeleteMeal(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const res = await axios.delete(`${BASE_URL}/delMeal/${deleteId}`);
+      console.log("res", res);
+      notifySuccess("🦄 Your item deleted Successfully");
+      getProduct();
+      setDeleteMeal(false);
+    } catch (error) {
+      console.log("error", error);
+      notifyError("🦄 Something went wrong!");
+    }
+  };
 
   return (
     <>
@@ -367,7 +443,7 @@ const UploadMeal = () => {
           </h1>
         </ModalHeader>
         <ModalBody>
-          <form onSubmit={addProduct}>
+          <form onSubmit={updateProduct}>
             <Grid container spacing={1}>
               <Grid xs={12} item>
                 <Autocomplete
@@ -576,6 +652,35 @@ const UploadMeal = () => {
           />
         </ModalBody>
       </Modal>
+      <Modal
+        size="md"
+        isOpen={deleteMeal}
+        toggle={() => setDeleteMeal(!deleteMeal)}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+        contentClassName="custom-modal-content"
+      >
+        <ModalHeader toggle={() => setDeleteMeal(!deleteMeal)}>
+          <h1 className="jacques-francois-shadow-regular ">
+            Confirm <span style={{ color: "rgb(295, 150, 0)" }}>Delete</span>
+          </h1>
+        </ModalHeader>
+        <ModalBody>
+          <p>Are you sure you want to delete this item?</p>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <button className="button px-5" onClick={handleDelete}>
+              Yes
+            </button>
+            <button className="button px-5" onClick={() => setDeleteMeal(false)}>
+              No
+            </button>
+          </div>
+        </ModalBody>
+      </Modal>
       {/* item Page */}
       <div
         style={{
@@ -734,6 +839,7 @@ const UploadMeal = () => {
                               backgroundColor: "transparent", // No background
                               cursor: "pointer", // Pointer cursor for a button
                             }}
+                            onClick={() => openEditModal(e)}
                           >
                             <EditIcon />
                           </button>
@@ -751,6 +857,7 @@ const UploadMeal = () => {
                               cursor: "pointer", // Pointer cursor for a button
                               marginLeft: "10px", // Add some spacing between the buttons
                             }}
+                            onClick={() => confirmDelete(e._id)}
                           >
                             <DeleteIcon className="text-danger" />
                           </button>
