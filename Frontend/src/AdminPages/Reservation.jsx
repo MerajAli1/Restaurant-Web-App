@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -6,12 +6,138 @@ import {
   TextField,
   InputAdornment,
 } from "@mui/material";
+import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import SearchIcon from "@mui/icons-material/Search";
 import DeleteIcon from "@mui/icons-material/Delete";
+import axios from "axios";
+import { BASE_URL } from "../Base_URL/BASE_URL";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Reservation = () => {
+  const [reservations, setReservations] = useState([]);
+  const [reservationModal, setReservationModal] = useState(false);
+  const [reservationId, setReservationId] = useState("");
+  const [refresh, setRefresh] = useState(false);
+
+  const notifySuccess = (success) =>
+    toast.success(success, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+  const notifyError = (error) =>
+    toast.error(error, {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+  // Get Reservations from the database
+  const getReservations = async () => {
+    try {
+      const res = await axios.get(`${BASE_URL}/getTableData`);
+      console.log("res.data", res.data.data);
+      setReservations(res.data.data);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  // Setting Delete Reservation Id
+  const setIdForDeleteReservation = async (id) => {
+    console.log("id", id);
+    setReservationId(id);
+    setReservationModal(true);
+  };
+
+  // Delete Reservation from the database
+  const deleteReservation = async () => {
+    try {
+      const res = await axios.delete(`${BASE_URL}/delTableData/${reservationId}`);
+      notifySuccess("Reservation Deleted Successfully!!");
+      setReservationModal(false);
+      setRefresh(!refresh);
+    } catch (error) {
+      notifyError("Reservation Not Deleted!!");
+      console.log("error", error);
+    }
+  };
+
+  // Accepted Reservation Function
+  const acceptReservation = async (id) => {
+    try {
+      const res = await axios.post(`${BASE_URL}/acceptedReservation/${id}`);
+      console.log("res.data", res.data);
+      notifySuccess("Reservation Accepted Successfully!!");
+      setRefresh(!refresh);
+    } catch (error) {
+      notifyError("Reservation Not Accepted!!");
+      console.log("error", error);
+    }
+  };
+
+  // Rejected Reservation Function
+  const rejectReservation = async (id) => {
+    try {
+      const res = await axios.post(`${BASE_URL}/rejectedReservation/${id}`);
+      console.log("res.data", res.data);
+      notifySuccess("Reservation Rejected Successfully!!");
+      setRefresh(!refresh);
+    } catch (error) {
+      notifyError("Reservation Not Rejected!!");
+      console.log("error", error);
+    }
+  };
+
+  // UseEffect to get Reservations
+  useEffect(() => {
+    getReservations();
+  }, [refresh]);
+
   return (
     <>
+      {/* Are you sure modal */}
+      <Modal
+        size="md"
+        isOpen={reservationModal}
+        toggle={() => setReservationModal(!reservationModal)}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center", // Vertically centers the modal
+          height: "100vh", // Full viewport height to center vertically
+        }}
+        contentClassName="custom-modal-content" // For further customization
+      >
+        <ModalHeader toggle={() => setReservationModal(!reservationModal)}>
+          <h1 className="jacques-francois-shadow-regular text-danger">
+            WARNING
+          </h1>
+          <p>Are You Sure you want to delete?</p>
+          <button
+            onClick={() => setReservationModal(false)}
+            className="btn btn-secondary me-3"
+          >
+            No
+          </button>
+          <button onClick={() => deleteReservation()} className="btn btn-danger">
+            Yes
+          </button>
+        </ModalHeader>
+        <ModalBody></ModalBody>
+      </Modal>
       <div
         style={{
           display: "flex",
@@ -21,6 +147,18 @@ const Reservation = () => {
           boxSizing: "border-box",
         }}
       >
+        <ToastContainer
+          position="top-center"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
         <Card
           style={{
             width: "100%",
@@ -54,7 +192,9 @@ const Reservation = () => {
                 style={{ fontSize: "30px" }}
               >
                 Total Tables :{" "}
-                <span style={{ color: "rgb(295, 150, 0)" }}>5</span>
+                <span style={{ color: "rgb(295, 150, 0)" }}>
+                  {reservations.length}
+                </span>
               </h1>
 
               <Grid item xs={5}>
@@ -123,39 +263,54 @@ const Reservation = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row" className="pt-3">
-                      1
-                    </th>
-                    <td className="pt-3">Emad Ali Khan</td>
-                    <td className="pt-3">emadalikhan5@gmail.com</td>
-                    <td className="pt-3"> 20-1-2024</td>
-                    <td className="pt-3"> Monday</td>
-                    <td className="pt-3">23:22:54</td>
-                    <td className="pt-2">
-                      <button className="btn btn-success">Accepted</button>
-                      <button className="btn btn-danger ms-1">Rejected</button>
-                    </td>
-                    <td className="pt-2">
-                      {" "}
-                      <button
-                        style={{
-                          display: "inline-flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          border: "1px solid red",
-                          borderRadius: "50%",
-                          height: "40px", // Same fixed height
-                          width: "40px", // Same fixed width
-                          backgroundColor: "transparent", // No background
-                          cursor: "pointer", // Pointer cursor for a button
-                          marginLeft: "10px", // Add some spacing between the buttons
-                        }}
-                      >
-                        <DeleteIcon className="text-danger" />
-                      </button>
-                    </td>
-                  </tr>
+                  {reservations.map((reservation, index) => {
+                    return (
+                      <tr key={index}>
+                        <th scope="row" className="pt-3">
+                          {index + 1}
+                        </th>
+                        <td className="pt-3">{reservation.fullName}</td>
+                        <td className="pt-3">{reservation.email}</td>
+                        <td className="pt-3">{reservation.ReservationDate}</td>
+                        <td className="pt-3">{reservation.ReservationDay}</td>
+                        <td className="pt-3">{reservation.ReservationTime}</td>
+                        <td className="pt-2">
+                          <button
+                            onClick={() => acceptReservation(reservation._id)}
+                            className="btn btn-success"
+                          >
+                            Accepted
+                          </button>
+                          <button
+                            onClick={() => rejectReservation(reservation._id)}
+                            className="btn btn-danger ms-1"
+                          >
+                            Rejected
+                          </button>
+                        </td>
+                        <td className="pt-2">
+                          {" "}
+                          <button
+                            onClick={() => setIdForDeleteReservation(reservation._id)}
+                            style={{
+                              display: "inline-flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              border: "1px solid red",
+                              borderRadius: "50%",
+                              height: "40px", // Same fixed height
+                              width: "40px", // Same fixed width
+                              backgroundColor: "transparent", // No background
+                              cursor: "pointer", // Pointer cursor for a button
+                              marginLeft: "10px", // Add some spacing between the buttons
+                            }}
+                          >
+                            <DeleteIcon className="text-danger" />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

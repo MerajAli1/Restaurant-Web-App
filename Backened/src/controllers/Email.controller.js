@@ -107,7 +107,7 @@ const RejectedReservation = asyncHandler(async (req, res) => {
       throw new ApiError(400, "data not found..!");
     }
 
-    const sub = "Reservation Accepted";
+    const sub = "Reservation Rejection";
     const msg = `Dear ${RejReservation.fullName},\n\nYour reservation for
       ${RejReservation.partySize} people on ${RejReservation.ReservationDate} at ${RejReservation.ReservationTime}
        has been rejected due to some issues. \n\nThank you for choosing us!\n\nBest regards,\nRestaurant Name,
