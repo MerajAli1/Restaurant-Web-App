@@ -42,4 +42,4 @@ const TableData = new mongoose.Schema(
   { timestamps: true }
 );
 
-export const Table = mongoose.model("product", TableData);
+export const Table = mongoose.model("tableReservations", TableData);

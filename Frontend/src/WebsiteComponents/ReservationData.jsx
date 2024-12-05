@@ -6,6 +6,9 @@ import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BASE_URL } from "../Base_URL/BASE_URL";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const ReservationData = ({ modal, setModal, date, time, size, day }) => {
   const [detail, setDetail] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -13,24 +16,52 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
   const [email, setEmail] = useState("");
   const [occassion, setOccassion] = useState("");
   const [request, setRequest] = useState("");
+  const [loading, setLoading] = useState(false); // Loading state
+  const [reservationCompleted, setReservationCompleted] = useState(false); // Reservation completed state
 
   const navigate = useNavigate();
+
+  const notifySuccess = (message) =>
+    toast.success(message, {
+      position: "bottom-right",
+      autoClose: 6000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+  const notifyError = (message) =>
+    toast.error(message, {
+      position: "bottom-right",
+      autoClose: 6000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
   const Confirmation = (e) => {
     e.preventDefault();
 
     if (!(fullName && phoneNumber && email && request)) {
       alert("fill all the fields...");
+      return;
     }
     setDetail(true);
   };
 
-  const ResvationComplete = (e) => {
+  const ResvationComplete = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true
 
     const ReservatinData = {
       fullName,
-      phoneNumber:parseInt(phoneNumber),
+      phoneNumber: parseInt(phoneNumber),
       email,
       occassion,
       request,
@@ -39,29 +70,34 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
       ReservationTime: time,
       partySize: size,
     };
-    console.log('ReservatinData==>', ReservatinData);
-    
-    // try {
-    //   const res = axios.post(`${BASE_URL}/tableData`, {
-    //     fullName,
-    //     phoneNumber,
-    //     email,
-    //     occassion,
-    //     request,
-    //     ReservationDate: date,
-    //     ReservationDay: day,
-    //     ReservationTime: time,
-    //     partySize: size,
-    //   },
-    // {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-    //   console.log("res==>", res);
-    // } catch (error) {
-    //   console.log("error==>", error);
-    // }
+    console.log("ReservatinData==>", ReservatinData);
+
+    try {
+      const res = await axios.post(
+        `${BASE_URL}/tableData`,
+        ReservatinData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("res==>", res);
+      notifySuccess("Reservation completed successfully!");
+      notifySuccess("Accepted or rejected email will be sent to you shortly.");
+      // Clear fields on success
+      setFullName("");
+      setPhoneNumber("");
+      setEmail("");
+      setOccassion("");
+      setRequest("");
+      setReservationCompleted(true); // Set reservation completed state to true
+    } catch (error) {
+      console.log("error==>", error);
+      notifyError("Failed to complete reservation.");
+    } finally {
+      setLoading(false); // Set loading to false
+    }
   };
 
   return (
@@ -106,11 +142,15 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                     className="fs-1"
                     style={{ color: "rgb(295, 150, 0)" }}
                   />{" "}
-                  <span className="ps-2">{size} people (Standar seating)</span>
+                  <span className="ps-2">{size} people (Standard seating)</span>
                 </p>
                 <div className="pt-4">
-                  <button className="button py-3 " onClick={ResvationComplete}>
-                    Confirm Reservation
+                  <button
+                    className="button py-3"
+                    onClick={ResvationComplete}
+                    disabled={loading || reservationCompleted} // Disable button when loading or reservation is completed
+                  >
+                    {loading ? "Processing..." : "Confirm Reservation"}
                   </button>
                 </div>
               </div>
@@ -122,6 +162,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                   <input
                     type="text"
                     placeholder="Full Name"
+                    value={fullName}
                     onChange={(e) => setFullName(e.target.value)}
                     required
                     style={{
@@ -137,6 +178,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                   <input
                     type="number"
                     placeholder="Phone No."
+                    value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     required
                     style={{
@@ -152,6 +194,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                   <input
                     type="text"
                     placeholder="Email Address"
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     style={{
@@ -167,6 +210,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                   <input
                     type="text"
                     placeholder="Select an Occasion"
+                    value={occassion}
                     onChange={(e) => setOccassion(e.target.value)}
                     style={{
                       padding: "10px",
@@ -181,6 +225,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                   <textarea
                     placeholder="Add a special Request.."
                     rows={3}
+                    value={request}
                     onChange={(e) => setRequest(e.target.value)}
                     style={{
                       padding: "10px",
@@ -201,6 +246,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
           )}
         </ModalBody>
       </Modal>
+      <ToastContainer />
     </>
   );
 };

@@ -6,7 +6,6 @@ import {ApiResponse} from '../utils/ApiResponse.js'
 // import nodemailer from "nodemailer";
 
 const TableData = asyncHandler(async (req, res) => {
-  //Getting product Detail from frontend
   const {
     fullName,
     phoneNumber,
@@ -20,7 +19,7 @@ const TableData = asyncHandler(async (req, res) => {
   } = req.body;
 
   try {
-    //checking validation
+    // Checking validation
     if (
       !(
         fullName &&
@@ -36,22 +35,27 @@ const TableData = asyncHandler(async (req, res) => {
     ) {
       throw new ApiError(400, "All Fields are required..!");
     }
+
     const tableData = await Table.create({
-      fullName: fullName,
-      phoneNumber: phoneNumber,
-      email: email,
-      occassion: occassion,
-      request: request,
-      ReservationDate: ReservationDate,
-      ReservationDay: ReservationDay,
-      ReservationTime: ReservationTime,
-      partySize: partySize,
+      fullName,
+      phoneNumber,
+      email,
+      occassion,
+      request,
+      ReservationDate,
+      ReservationDay,
+      ReservationTime,
+      partySize,
     });
 
     return res
       .status(201)
-      .json(new ApiResponse(200, tableData, "Table Data send Successfully..."));
+      .json(new ApiResponse(200, tableData, "Table Data sent Successfully..."));
   } catch (error) {
+    if (error.code === 11000) {
+      // Handle duplicate key error
+      return res.status(400).json(new ApiResponse(400, null, "Duplicate key error"));
+    }
     return res.status(500).json(new ApiResponse(500, null, error.message));
   }
 });
