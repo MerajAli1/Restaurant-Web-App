@@ -29,6 +29,7 @@ const UploadMeal = () => {
   const [meal_id, setMeal_id] = useState("");
   const [mealImage, setMealImage] = useState("");
   const [mealData, setMealData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const notifySuccess = (success) =>
     toast.success(success, {
       position: "bottom-right",
@@ -111,6 +112,11 @@ const UploadMeal = () => {
   useEffect(() => {
     getProduct();
   }, []);
+
+  const filteredMeals = mealData.filter((meal) =>
+    meal.mealName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       {/* Add Item modal */}
@@ -618,6 +624,8 @@ const UploadMeal = () => {
                   placeholder="Item Name"
                   variant="outlined"
                   fullWidth
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -674,7 +682,7 @@ const UploadMeal = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {mealData.map((e, i) => {
+                  {filteredMeals.map((e, i) => {
                     return (
                       <tr key={i}>
                         <th scope="row">{i + 1}</th>

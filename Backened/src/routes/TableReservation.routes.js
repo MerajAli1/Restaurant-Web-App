@@ -9,7 +9,9 @@ import {
 const router = Router();
 // Integrated on Fronted side in WebsiteComponents/ReservationData.jsx
 router.route("/tableData").post(TableData);
+//Integrated on Fronted side in WebsiteComponents/ReservationData.jsx
 router.route("/getTableData").get(GetTableData);
+//Integrated on Fronted side in WebsiteComponents/ReservationData.jsx
 router.route("/delTableData/:id").delete(DelTableData);
 router.route("/Acc&RejData/:id").delete(Reservation);
 
