@@ -13,6 +13,6 @@ router.route("/tableData").post(TableData);
 router.route("/getTableData").get(GetTableData);
 //Integrated on Fronted side in WebsiteComponents/ReservationData.jsx
 router.route("/delTableData/:id").delete(DelTableData);
-router.route("/Acc&RejData/:id").delete(Reservation);
+router.route("/Acc&RejData/:id").post(Reservation);
 
 export default router;

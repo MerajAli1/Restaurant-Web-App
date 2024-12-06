@@ -60,7 +60,7 @@ export default function AdminForm() {
         console.log(response, "adminLogin");
         if (response) {
           localStorage.setItem("uid", email);
-          navigate("/adminPortal/*");
+          navigate("/adminPortal/welcome");
         }
       } catch (error) {
         console.log(error.message);

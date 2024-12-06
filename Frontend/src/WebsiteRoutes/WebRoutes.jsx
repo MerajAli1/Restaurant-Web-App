@@ -10,6 +10,7 @@ import AdminForm from "../AdminPages/AdminForm";
 import AdminDashboard from "../AdminPages/AdminDashboard";
 import SuccessCheckout from "../WebsiteComponents/SuccessCheckout";
 import ErrorCheckout from "../WebsiteComponents/ErrorCheckout";
+import WelcomePage from "../AdminPages/WelcomePage";
 
 const WebRoutes = () => {
   return (
@@ -25,6 +26,7 @@ const WebRoutes = () => {
         <Route path="/success" element={<SuccessCheckout />} />
         <Route path="/error" element={<ErrorCheckout />} />
         <Route element={<AuthProtection />}>
+        <Route path="/adminPortal/welcome" element={<WelcomePage />} />
           <Route path="/adminPortal/*" element={<AdminDashboard />} />
         </Route>
       </Routes>
