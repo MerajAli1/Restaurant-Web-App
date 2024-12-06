@@ -8,10 +8,10 @@ import {
 } from "@mui/material";
 import { Modal, ModalBody, ModalHeader } from "reactstrap";
 import SearchIcon from "@mui/icons-material/Search";
-import DeleteIcon from "@mui/icons-material/Delete";
 import axios from "axios";
 import { BASE_URL } from "../Base_URL/BASE_URL";
 import { toast, ToastContainer } from "react-toastify";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const TotalOrders = () => {
   const [meal, setMeal] = React.useState([]);
@@ -24,6 +24,7 @@ const TotalOrders = () => {
   const [accepted, setAccepted] = React.useState(false);
   //State For Refresh the page
   const [refresh, setRefresh] = React.useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   //Notification for success
   const notifySuccess = (success) =>
     toast.success(success, {
@@ -38,7 +39,7 @@ const TotalOrders = () => {
     });
   //Notification for error
   const notifyError = (error) =>
-    toast.success(error, {
+    toast.error(error, {
       position: "bottom-right",
       autoClose: 3000,
       hideProgressBar: false,
@@ -111,6 +112,11 @@ const TotalOrders = () => {
   useEffect(() => {
     getOrders();
   }, [refresh]);
+
+  const filteredMeals = meal.filter((order) =>
+    `${order.firstName} ${order.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <>
       {/* Are you sure modal */}
@@ -209,6 +215,8 @@ const TotalOrders = () => {
                   placeholder="Accessories Id"
                   variant="outlined"
                   fullWidth
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -269,7 +277,7 @@ const TotalOrders = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {meal.map((e, i) => {
+                  {filteredMeals.map((e, i) => {
                     const createdAtDate = e.createdAt.split("T")[0];
                     const updatedAtDate = e.updatedAt.split("T")[0];
                     return (

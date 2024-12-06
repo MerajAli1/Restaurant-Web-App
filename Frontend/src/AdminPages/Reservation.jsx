@@ -19,6 +19,7 @@ const Reservation = () => {
   const [reservationModal, setReservationModal] = useState(false);
   const [reservationId, setReservationId] = useState("");
   const [refresh, setRefresh] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const notifySuccess = (success) =>
     toast.success(success, {
@@ -105,6 +106,10 @@ const Reservation = () => {
   useEffect(() => {
     getReservations();
   }, [refresh]);
+
+  const filteredReservations = reservations.filter((reservation) =>
+    reservation.fullName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -203,6 +208,8 @@ const Reservation = () => {
                   placeholder="Reservor Name"
                   variant="outlined"
                   fullWidth
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -263,7 +270,7 @@ const Reservation = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {reservations.map((reservation, index) => {
+                  {filteredReservations.map((reservation, index) => {
                     return (
                       <tr key={index}>
                         <th scope="row" className="pt-3">
