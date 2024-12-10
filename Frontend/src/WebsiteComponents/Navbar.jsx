@@ -32,6 +32,9 @@ const Navbar = () => {
         <ModalBody>
           {addToCart.length !== 0 ? (
             addToCart.map((data, index) => {
+              console.log(addToCart, "data");
+              console.log(data, "data");
+
               return (
                 <>
                   <div className="container" key={index}>
@@ -66,7 +69,7 @@ const Navbar = () => {
                               className=" button"
                               onClick={() => {
                                 data.count > 1
-                                  ? dispatch(cartDecrement(data.id))
+                                  ? dispatch(cartDecrement(data._id))
                                   : dispatch(removeAddToCart(data));
                               }}
                             >
@@ -76,7 +79,7 @@ const Navbar = () => {
                               className="ms-3 button"
                               onClick={() => {
                                 data.count < stock
-                                  ? dispatch(cartIncrement(data.id))
+                                  ? dispatch(cartIncrement(data._id))
                                   : setCount(stock);
                               }}
                             >
