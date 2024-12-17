@@ -9,7 +9,8 @@ import {
   cartIncrement,
   removeAddToCart,
 } from "../Store/AddToCart";
-
+import logo from "../Images/RestaurantLogo.png";
+import logo2 from "../Images/logo.png";
 const Navbar = () => {
   const { addToCart } = useSelector((state) => state.addToCartReducer);
   // console.log(addToCart, "Navbar");
@@ -120,12 +121,7 @@ const Navbar = () => {
             style={{ width: "70px", height: "60px" }}
             to="/"
           >
-            <img
-              src="https://websitedemos.net/italian-restaurant-02/wp-content/uploads/sites/283/2018/10/fresco-free-logo.svg"
-              alt="fresco"
-              width="120px"
-              height="50px"
-            />
+            <img src={logo} alt="fresco" width="150px" height="70px" />
           </NavLink>
           <button
             className="navbar-toggler"

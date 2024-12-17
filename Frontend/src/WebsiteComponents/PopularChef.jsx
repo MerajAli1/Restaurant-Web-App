@@ -7,19 +7,22 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 const PopularChef = () => {
   const chefData = [
     {
-      image: chef1,
-      name: "Emad",
+      image:
+        "https://media.istockphoto.com/id/1398952978/photo/wow-excited-face-young-handsome-asian-man-chef-in-uniform-with-hat-standing-posting-looking.jpg?s=612x612&w=0&k=20&c=B7rc0BWrlDh3vu1czgaxfQ0DiR83Ygy60KwJejVMNow=",
+      name: "Joseph",
       status: "Head Chef",
     },
     {
-      image: chef1,
-      name: "Emad",
-      status: "Head Chef",
+      image:
+        "https://www.shutterstock.com/image-photo/young-chef-baker-woman-wear-600nw-2501922755.jpg",
+      name: "Anaya",
+      status: "Sous Chef",
     },
     {
-      image: chef1,
-      name: "Emad",
-      status: "Head Chef",
+      image:
+        "https://img.freepik.com/free-photo/young-handsome-cook-chef-uniform-holding-frying-pan-hiding-it-looking-isolated-orange-space_141793-45183.jpg",
+      name: "Anarcha",
+      status: "Chef de Partie ",
     },
   ];
 
@@ -57,7 +60,7 @@ const PopularChef = () => {
                       }}
                       className=" rounded-pill"
                       src={data.image}
-                      height="600px"
+                      height="500px"
                       width="100%"
                       alt={data.name}
                     />
@@ -80,7 +83,7 @@ const PopularChef = () => {
             );
           })}
 
-          <div className="col-12 mt-5">
+          {/* <div className="col-12 mt-5">
             <div className="text-center ">
               <button
                 className="button dancing-script px-5 py-3 fs-3"
@@ -89,7 +92,7 @@ const PopularChef = () => {
                 View all <ArrowForwardIcon />
               </button>
             </div>
-          </div>
+          </div> */}
         </section>
       </div>
     </>
