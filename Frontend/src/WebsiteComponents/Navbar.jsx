@@ -9,7 +9,6 @@ import {
   cartIncrement,
   removeAddToCart,
 } from "../Store/AddToCart";
-import logo from "../Images/RestaurantLogo.png";
 import logo2 from "../Images/logo.png";
 const Navbar = () => {
   const { addToCart } = useSelector((state) => state.addToCartReducer);
@@ -118,10 +117,10 @@ const Navbar = () => {
         <div className="container-fluid">
           <NavLink
             className="navbar-brand ms-2"
-            style={{ width: "70px", height: "60px" }}
+            style={{ width: "70px", height: "100px" }}
             to="/"
           >
-            <img src={logo} alt="fresco" width="150px" height="70px" />
+            <img src={logo2} alt="fresco" width="200px" height="100px" />
           </NavLink>
           <button
             className="navbar-toggler"

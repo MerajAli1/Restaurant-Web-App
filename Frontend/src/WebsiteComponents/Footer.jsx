@@ -6,7 +6,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import HomeIcon from "@mui/icons-material/Home";
 import MailIcon from "@mui/icons-material/Mail";
 import CallIcon from "@mui/icons-material/Call";
-import logo from "../Images/logo.png";
+import logo from "../Images/logo1.png";
 const Footer = () => {
   return (
     <>
