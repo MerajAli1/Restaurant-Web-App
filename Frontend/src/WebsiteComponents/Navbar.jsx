@@ -12,7 +12,7 @@ import {
 import logo2 from "../Images/logo.png";
 const Navbar = () => {
   const { addToCart } = useSelector((state) => state.addToCartReducer);
-  // console.log(addToCart, "Navbar");
+  console.log(addToCart, "Navbar");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const Navbar = () => {
                             src={data.image}
                             width={200}
                             height={180}
-                            alt={data.title}
+                            alt={data.mealName}
                             style={{
                               borderRadius: "40px",
                             }}
@@ -54,14 +54,14 @@ const Navbar = () => {
                       </div>
                       <div className="col-12 col-md-6 mt-3">
                         <div>
-                          <h4 className="jacques-francois-shadow-regular">
-                            {data.title}
+                          <h4 className="jacques-francois-shadow-regular text-center">
+                            {data.mealName}
                           </h4>
                           <div>
                             <h5 className="pt-1 text-center fw-bold">
                               {data.count}
                               <span className="fs-5 fw-light"> X</span>{" "}
-                              {data.Price} = {data.Price * data.count}
+                              {data.Price}$ = {data.Price * data.count}$
                             </h5>
                           </div>
                           <div className="text-center">
