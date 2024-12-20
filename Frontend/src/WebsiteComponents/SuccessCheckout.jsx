@@ -10,9 +10,9 @@ const SuccessCheckout = () => {
         style={{
           maxWidth: 600,
           margin: "0 auto",
-          marginTop: "50px",
+          marginTop: "70px",
           padding: "20px",
-          borderRadius: "10px",
+          borderRadius: "20px",
         }}
       >
         <CardContent>

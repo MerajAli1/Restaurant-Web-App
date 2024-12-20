@@ -11,6 +11,7 @@ import AdminDashboard from "../AdminPages/AdminDashboard";
 import SuccessCheckout from "../WebsiteComponents/SuccessCheckout";
 import ErrorCheckout from "../WebsiteComponents/ErrorCheckout";
 import WelcomePage from "../AdminPages/WelcomePage";
+import OrderSuccess from "../WebsitePages/OrderSuccess";
 
 const WebRoutes = () => {
   return (
@@ -21,12 +22,13 @@ const WebRoutes = () => {
         <Route path="/about" element={<Aboout />} />
         <Route path="/reservation" element={<Reservation />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/checkout" element={<Checkout />} />
         <Route path="/admin" element={<AdminForm />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orderSuccess" element={<OrderSuccess />} />
         <Route path="/success" element={<SuccessCheckout />} />
         <Route path="/error" element={<ErrorCheckout />} />
         <Route element={<AuthProtection />}>
-        <Route path="/adminPortal/welcome" element={<WelcomePage />} />
+          <Route path="/adminPortal/welcome" element={<WelcomePage />} />
           <Route path="/adminPortal/*" element={<AdminDashboard />} />
         </Route>
       </Routes>

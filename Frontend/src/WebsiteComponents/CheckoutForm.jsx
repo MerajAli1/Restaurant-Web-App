@@ -11,10 +11,12 @@ import { Modal, ModalBody, ModalHeader, Row } from "reactstrap";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { BASE_URL } from "../Base_URL/BASE_URL";
+import { useNavigate } from "react-router-dom";
 const CheckoutForm = () => {
   const [selectedValue, setSelectedValue] = useState("");
   const { addToCart } = useSelector((state) => state.addToCartReducer);
   // console.log(addToCart, "stripe");
+  const navigate = useNavigate();
 
   const [address, setAddress] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -104,6 +106,9 @@ const CheckoutForm = () => {
       });
       console.log("res", res);
       notifySuccess("🦄 Your Order Placed Successfully");
+      if (res) {
+        navigate("/orderSuccess");
+      }
     } catch (error) {
       console.log("error", error);
       notifyError("🦄 Failed to place order");
