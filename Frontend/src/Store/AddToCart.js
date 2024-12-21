@@ -12,8 +12,11 @@ const cartSlice = createSlice({
   reducers: {
     addCart: (state, action) => {
       const existingProductIndex = state.addToCart.findIndex(
-        (p) => p.id === action.payload.id
+        (p) => p._id === action.payload._id
       );
+      // console.log(p.id);
+
+      console.log("this is existing product index", existingProductIndex);
       if (existingProductIndex === -1) {
         // If the product is not in the cart, add it with count = 1
         state.addToCart.push({ ...action.payload, count: 1 });
