@@ -6,7 +6,7 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import HomeIcon from "@mui/icons-material/Home";
 import MailIcon from "@mui/icons-material/Mail";
 import CallIcon from "@mui/icons-material/Call";
-
+import logo from "../Images/logo1.png";
 const Footer = () => {
   return (
     <>
@@ -20,12 +20,7 @@ const Footer = () => {
               <div className="col-lg-4 col-md-12 mb-4 mb-md-0">
                 <h4 className=" mb-4 fw-bold">
                   {" "}
-                  <img
-                    src="https://websitedemos.net/italian-restaurant-02/wp-content/uploads/sites/283/2018/10/fresco-free-logo.svg"
-                    alt="fresco"
-                    width="150px"
-                    height="50px"
-                  />
+                  <img src={logo} alt="fresco" width="150px" height="80px" />
                 </h4>
                 <p className="fs-5">
                   Lorem ipsum dolor sit amet consectetur adipisicing elit.

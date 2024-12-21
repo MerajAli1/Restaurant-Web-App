@@ -9,7 +9,7 @@ import {
   cartIncrement,
   removeAddToCart,
 } from "../Store/AddToCart";
-
+import logo2 from "../Images/logo.png";
 const Navbar = () => {
   const { addToCart } = useSelector((state) => state.addToCartReducer);
   // console.log(addToCart, "Navbar");
@@ -32,6 +32,9 @@ const Navbar = () => {
         <ModalBody>
           {addToCart.length !== 0 ? (
             addToCart.map((data, index) => {
+              console.log(addToCart, "data");
+              console.log(data, "data");
+
               return (
                 <>
                   <div className="container" key={index}>
@@ -66,7 +69,7 @@ const Navbar = () => {
                               className=" button"
                               onClick={() => {
                                 data.count > 1
-                                  ? dispatch(cartDecrement(data.id))
+                                  ? dispatch(cartDecrement(data._id))
                                   : dispatch(removeAddToCart(data));
                               }}
                             >
@@ -76,7 +79,7 @@ const Navbar = () => {
                               className="ms-3 button"
                               onClick={() => {
                                 data.count < stock
-                                  ? dispatch(cartIncrement(data.id))
+                                  ? dispatch(cartIncrement(data._id))
                                   : setCount(stock);
                               }}
                             >
@@ -114,15 +117,10 @@ const Navbar = () => {
         <div className="container-fluid">
           <NavLink
             className="navbar-brand ms-2"
-            style={{ width: "70px", height: "60px" }}
+            style={{ width: "70px", height: "100px" }}
             to="/"
           >
-            <img
-              src="https://websitedemos.net/italian-restaurant-02/wp-content/uploads/sites/283/2018/10/fresco-free-logo.svg"
-              alt="fresco"
-              width="120px"
-              height="50px"
-            />
+            <img src={logo2} alt="fresco" width="200px" height="100px" />
           </NavLink>
           <button
             className="navbar-toggler"

@@ -3,9 +3,6 @@ import { Checkout } from "../models/Checkout.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
-// const stripe = require("stripe")(
-//   "sk_test_51Q47vSG124FIRgpMYy2XfP1PthkORGJdpoYLHnLtq8YZsD3YkyckDXIh2cKas6JwxGvHgVU3oFuHfunyaK5qUqtL00cIlfws6N"
-// );
 import Stripe from "stripe";
 
 const stripe = new Stripe(

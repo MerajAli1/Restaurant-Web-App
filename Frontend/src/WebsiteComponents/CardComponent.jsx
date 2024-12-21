@@ -10,7 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 const CardComponent = () => {
   const dispatch = useDispatch();
   const { allProduct } = useSelector((state) => state.productReducer);
-  console.log("allProduct", allProduct);
+  // console.log("allProduct", allProduct);
 
   const notifySuccess = (success) =>
     toast.success(success, {

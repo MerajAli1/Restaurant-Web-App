@@ -22,7 +22,7 @@ const Welcome = () => {
                 className="jacques-francois-shadow-regular"
                 style={{ color: "rgb(295, 150, 0)" }}
               >
-                Fresco Restaurant
+                Savory Bite Restaurant
               </span>{" "}
               "
             </h1>
