@@ -9,7 +9,7 @@ const Welcome = () => {
         <div
           className="text-center"
           style={{
-            paddingTop: "200px",
+            paddingTop: "100px",
           }}
         >
           <div className="dancing-script">
