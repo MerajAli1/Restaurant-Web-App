@@ -5,7 +5,7 @@ import { asyncHandler } from "../utils/AsyncHandler.js";
 
 const RegisterUser = asyncHandler(async (req, res) => {
   // Getting user detail from frontend
-  const { fullName, email, password } = req.body;
+  const { fullName, email, password, department } = req.body;
 
   //checking validation
   // if (!(fullName && email && password)) {
@@ -29,6 +29,7 @@ const RegisterUser = asyncHandler(async (req, res) => {
     fullName,
     email,
     password,
+    department,
   });
 
   //Data for sending to frontend without password
