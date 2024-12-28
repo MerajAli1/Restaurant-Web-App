@@ -222,22 +222,6 @@ const CheckoutForm = () => {
                       </h5>
                       <h5 className="me-4">{data.Price * data.count}.00$</h5>
                     </div>
-                    <div className="d-flex justify-content-between playfair-display">
-                      <h5 className="ms-4">Shipping</h5>
-                      <h5 className="me-4">0.00$</h5>
-                    </div>
-                    <div className="d-flex justify-content-between playfair-display">
-                      <h5 className="ms-4">Tax</h5>
-                      <h5 className="me-4">0.00$</h5>
-                    </div>
-                    <hr />
-                    <div className="mt-3 d-flex justify-content-between jacques-francois-shadow-regular">
-                      <h4 className="ms-4 fw-bold">Total</h4>
-                      <h4 className="me-4 fw-bold">
-                        {/* {data?.Price ? data?.Price : "None"} */}
-                        {subTotal}.00$
-                      </h4>
-                    </div>
                   </div>
                 </>
               );
@@ -250,6 +234,22 @@ const CheckoutForm = () => {
               No Data Found
             </h1>
           )}
+          <hr />
+          <div className="d-flex justify-content-between playfair-display">
+            <h5 className="ms-4">Shipping</h5>
+            <h5 className="me-4">0.00$</h5>
+          </div>
+          <div className="d-flex justify-content-between playfair-display">
+            <h5 className="ms-4">Tax</h5>
+            <h5 className="me-4">0.00$</h5>
+          </div>
+          <div className="mt-3 d-flex justify-content-between jacques-francois-shadow-regular">
+            <h4 className="ms-4 fw-bold">Total</h4>
+            <h4 className="me-4 fw-bold">
+              {/* {data?.Price ? data?.Price : "None"} */}
+              {subTotal}.00$
+            </h4>
+          </div>
 
           {addToCart.length !== 0 && (
             <div className="d-flex justify-content-center align-items-center mt-5">

@@ -38,6 +38,10 @@ const TableData = new mongoose.Schema(
       type: String,
       default: "No request From Client",
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

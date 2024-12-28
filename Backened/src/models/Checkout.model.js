@@ -33,6 +33,10 @@ const CheckoutSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
+    status: {
+      type: Boolean,
+      default: false
+    }
   },
   { timestamps: true }
 );
