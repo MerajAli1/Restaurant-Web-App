@@ -89,7 +89,7 @@ const DelCheckoutData = asyncHandler(async (req, res) => {
     throw new ApiError(500, error);
   }
 });
-
+//Accepted and rejected Order
 const OrderTransfer = asyncHandler(async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
@@ -99,8 +99,8 @@ const OrderTransfer = asyncHandler(async (req, res) => {
     }
     // finding the data from checkout
     const findOrder = await Checkout.findOne({ _id: id });
-    //sending data to the Accepted Order
-    const sendOrder = await Order.create({
+    //sending data to the Accepted/Rejected Order
+    const orderStatus = await Order.create({
       OrderData: findOrder,
       status: status,
     });
@@ -111,7 +111,7 @@ const OrderTransfer = asyncHandler(async (req, res) => {
       .json(
         new ApiResponse(
           200,
-          sendOrder,
+          orderStatus,
           "Order send Successfully to Accepted Order and deleted from orders..."
         )
       );

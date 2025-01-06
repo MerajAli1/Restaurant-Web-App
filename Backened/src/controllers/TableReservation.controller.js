@@ -2,7 +2,7 @@ import { Data } from "../models/Accepted&RejectedReservations.model.js";
 import { Table } from "../models/TableReservation.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
-import {ApiResponse} from '../utils/ApiResponse.js'
+import { ApiResponse } from "../utils/ApiResponse.js";
 // import nodemailer from "nodemailer";
 
 const TableData = asyncHandler(async (req, res) => {
@@ -54,7 +54,9 @@ const TableData = asyncHandler(async (req, res) => {
   } catch (error) {
     if (error.code === 11000) {
       // Handle duplicate key error
-      return res.status(400).json(new ApiResponse(400, null, "Duplicate key error"));
+      return res
+        .status(400)
+        .json(new ApiResponse(400, null, "Duplicate key error"));
     }
     return res.status(500).json(new ApiResponse(500, null, error.message));
   }
@@ -98,7 +100,7 @@ const DelTableData = asyncHandler(async (req, res) => {
   }
 });
 
-// Accepted Reservation
+// Accepted and Rejected Reservation
 const Reservation = asyncHandler(async (req, res) => {
   const { status } = req.body;
   const { id } = req.params;
@@ -108,7 +110,7 @@ const Reservation = asyncHandler(async (req, res) => {
     }
     // finding the data from table
     const findData = await Table.findOne({ _id: id });
-    //sending data to the Accepted Reservation
+    //sending data to the Accepted/Rejected Reservation
     const sendData = await Data.create({
       ReservationData: findData,
       status: status,
