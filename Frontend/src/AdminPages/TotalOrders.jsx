@@ -89,6 +89,18 @@ const TotalOrders = () => {
       notifyError("Order Not Accepted!!");
       console.log("error", error);
     }
+
+    try {
+      const res = await axios.post(`${BASE_URL}/orderTransfer/${id}`, {
+        OrderData: id,
+        status: "Accepted",
+      });
+      console.log("res.data", res.data);
+      notifySuccess("Order Accepted Successfully!!");
+    } catch (error) {
+      notifyError("Order Not Accepted!!");
+      console.log("error", error);
+    }
   };
 
   //setId for rejected Order
@@ -106,6 +118,18 @@ const TotalOrders = () => {
       notifyError("Order Not Rejected!!");
       console.log("error", error);
     }
+
+     try {
+      const res = await axios.post(`${BASE_URL}/orderTransfer/${id}`, {
+        OrderData: id,
+        status: "Rejected",
+      });
+      console.log("res.data", res.data);
+      notifySuccess("Order Accepted Successfully!!");
+    } catch (error) {
+      notifyError("Order Not Accepted!!");
+      console.log("error", error);
+    }
   };
 
   //UseEffect to get Orders
@@ -114,7 +138,9 @@ const TotalOrders = () => {
   }, [refresh]);
 
   const filteredMeals = meal.filter((order) =>
-    `${order.firstName} ${order.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
+    `${order.firstName} ${order.lastName}`
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
   );
 
   return (

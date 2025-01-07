@@ -24,7 +24,7 @@ const DataSchema = new mongoose.Schema(
     },
     occassion: {
       type: String,
-      required: true,
+      // required: true,
     },
     partySize: {
       type: Number,

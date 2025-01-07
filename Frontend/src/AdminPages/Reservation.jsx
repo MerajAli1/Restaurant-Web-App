@@ -87,6 +87,18 @@ const Reservation = () => {
       notifyError("Reservation Not Accepted!!");
       console.log("error", error);
     }
+
+    try {
+      const res = await axios.post(`${BASE_URL}/Acc&RejData/${id}`, {
+        ReservationData: id,
+        status: "Accepted",
+      });
+      console.log("res.data", res.data);
+      notifySuccess("Order Accepted Successfully!!");
+    } catch (error) {
+      notifyError("Order Not Accepted!!");
+      console.log("error", error);
+    }
   };
 
   // Rejected Reservation Function
@@ -98,6 +110,17 @@ const Reservation = () => {
       setRefresh(!refresh);
     } catch (error) {
       notifyError("Reservation Not Rejected!!");
+      console.log("error", error);
+    }
+    try {
+      const res = await axios.post(`${BASE_URL}/Acc&RejData/${id}`, {
+        ReservationData: id,
+        status: "Accepted",
+      });
+      console.log("res.data", res.data);
+      notifySuccess("Order Accepted Successfully!!");
+    } catch (error) {
+      notifyError("Order Not Accepted!!");
       console.log("error", error);
     }
   };
