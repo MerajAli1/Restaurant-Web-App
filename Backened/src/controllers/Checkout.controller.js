@@ -90,36 +90,53 @@ const DelCheckoutData = asyncHandler(async (req, res) => {
   }
 });
 //Accepted and rejected Order
-const OrderTransfer = asyncHandler(async (req, res) => {
-  const { status } = req.body;
-  const { id } = req.params;
+const OrderTransfer = asyncHandler(async (req, res, next) => {
+  const { status } = req.body; // Accepted/Rejected status
+  const { id } = req.params; // ID of the checkout order
+
   try {
+    // Validate ID
     if (!id) {
-      throw new ApiError(400, "Id Not found... ...");
+      return next(new ApiError(400, "Order ID not provided."));
     }
-    // finding the data from checkout
-    const findOrder = await Checkout.findOne({ _id: id });
-    //sending data to the Accepted/Rejected Order
+
+    // Find the order in the Checkout collection
+    const findOrder = await Checkout.findById(id);
+    if (!findOrder) {
+      return next(new ApiError(404, "Order not found in Checkout."));
+    }
+
+    // Create a new order in the Order collection
     const orderStatus = await Order.create({
-      // OrderData: findOrder,
-      status: status,
+      firstName: findOrder.firstName,
+      lastName: findOrder.lastName,
+      email: findOrder.email,
+      phoneNumber: findOrder.phoneNumber,
+      paymentMethod: findOrder.paymentMethod,
+      address: findOrder.address,
+      orderItems: findOrder.orderItems,
+      status: status, // Accepted or Rejected
     });
-    //now delete from checkout
-    await Checkout.findByIdAndDelete({ _id: id });
+
+    // Delete the original order from the Checkout collection
+    await Checkout.findByIdAndDelete(id);
+
+    // Respond with success
     return res
       .status(201)
       .json(
         new ApiResponse(
-          200,
-          orderStatus,
-          findOrder,
-          "Order send Successfully to Accepted Order and deleted from orders..."
+          201,
+          { orderStatus, deletedOrder: findOrder },
+          "Order successfully transferred and removed from Checkout."
         )
       );
   } catch (error) {
-    throw new ApiError(500, error);
+    // Handle unexpected errors
+    return next(new ApiError(500, error.message || "Internal Server Error."));
   }
 });
+
 const paymentMethod = asyncHandler(async (req, res) => {
   const { products } = req.body;
   console.log(products);

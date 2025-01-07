@@ -2,9 +2,32 @@ import mongoose, { Schema } from "mongoose";
 
 const OrderSchema = new mongoose.Schema(
   {
-    OrderData: {
-      type: Schema.Types.ObjectId,
-      ref: "checkout",
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
+    paymentMethod: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    orderItems: {
+      type: Array,
       required: true,
     },
     status: {
