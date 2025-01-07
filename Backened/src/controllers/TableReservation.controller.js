@@ -100,34 +100,92 @@ const DelTableData = asyncHandler(async (req, res) => {
   }
 });
 
-// Accepted and Rejected Reservation
-const Reservation = asyncHandler(async (req, res) => {
-  const { status } = req.body;
-  const { id } = req.params;
+// // Accepted and Rejected Reservation
+// const Reservation = asyncHandler(async (req, res) => {
+//   const { status } = req.body;
+//   const { id } = req.params;
+//   try {
+//     if (!id) {
+//       throw new ApiError(400, "Id Not found... ...");
+//     }
+//     // finding the data from table
+//     const findData = await Table.findOne({ _id: id });
+//     //sending data to the Accepted/Rejected Reservation
+//     const ReservationStatus = await Data.create({
+//       ReservationDate: findData.ReservationDate,
+//       ReservationDay: findData.ReservationDay,
+//       ReservationTime: findData.ReservationTime,
+//       email: findData.email,
+//       fullName: findData.fullName,
+//       occassion: findData.occassion,
+//       partySize: findData.partySize,
+//       partySize: findData.partySize,
+//       phoneNumber: findData.phoneNumber,
+//       request: findData.request,
+//       status: status,
+//     });
+//     //now delete from Table
+//     await Table.findByIdAndDelete({ _id: id });
+//     return res
+//       .status(201)
+//       .json(
+//         new ApiResponse(
+//           200,
+//           ReservationStatus,
+//           "Tabale data send Successfully to Accepted Reservation and deleted from tableReservation..."
+//         )
+//       );
+//   } catch (error) {
+//     throw new ApiError(500, error);
+//   }
+// });
+const Reservation = asyncHandler(async (req, res, next) => {
+  const { status } = req.body; // Accepted/Rejected status
+  const { id } = req.params; // ID of the table reservation
+
   try {
+    // Check if ID is provided
     if (!id) {
-      throw new ApiError(400, "Id Not found... ...");
+      return next(new ApiError(400, "Id not provided."));
     }
-    // finding the data from table
-    const findData = await Table.findOne({ _id: id });
-    //sending data to the Accepted/Rejected Reservation
-    const sendData = await Data.create({
-      ReservationData: findData,
-      status: status,
+
+    // Find the reservation by ID in the Table collection
+    const findData = await Table.findById(id);
+    if (!findData) {
+      return next(new ApiError(404, "Reservation not found."));
+    }
+
+    // Create a new reservation record with the accepted/rejected status
+    const reservationStatus = await Data.create({
+      ReservationDate: findData.ReservationDate,
+      ReservationDay: findData.ReservationDay,
+      ReservationTime: findData.ReservationTime,
+      email: findData.email,
+      fullName: findData.fullName,
+      occasion: findData.occasion,
+      partySize: findData.partySize,
+      phoneNumber: findData.phoneNumber,
+      request: findData.request,
+      status: status, // Accepted or Rejected
     });
-    //now delete from Table
-    await Table.findByIdAndDelete({ _id: id });
+
+    // Delete the original reservation from the Table collection
+    await Table.findByIdAndDelete(id);
+
+    // Return success response
     return res
       .status(201)
       .json(
         new ApiResponse(
-          200,
-          sendData,
-          "Tabale data send Successfully to Accepted Reservation and deleted from tableReservation..."
+          201,
+          reservationStatus,
+          "Reservation successfully processed and removed from the Table collection."
         )
       );
   } catch (error) {
-    throw new ApiError(500, error);
+    // Handle unexpected errors
+    next(new ApiError(500, error.message || "Internal Server Error."));
   }
 });
+
 export { TableData, GetTableData, DelTableData, Reservation };
