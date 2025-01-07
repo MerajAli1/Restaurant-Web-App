@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   DelTableData,
+  GetReservation,
   GetTableData,
   Reservation,
   TableData,
@@ -14,5 +15,6 @@ router.route("/getTableData").get(GetTableData);
 //Integrated on Fronted side in WebsiteComponents/ReservationData.jsx
 router.route("/delTableData/:id").delete(DelTableData);
 router.route("/Acc&RejData/:id").post(Reservation);
+router.route("/allReservation").get(GetReservation);
 
 export default router;

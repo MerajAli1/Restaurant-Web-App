@@ -5,6 +5,7 @@ import {
   GetCheckoutData,
   OrderTransfer,
   paymentMethod,
+  GetTransfer,
 } from "../controllers/Checkout.controller.js";
 
 const router = Router();
@@ -15,6 +16,7 @@ router.route("/getcheckout").get(GetCheckoutData);
 // Integrated on Frontend TotalOrders.js Component
 router.route("/delcheckout/:id").delete(DelCheckoutData);
 router.route("/orderTransfer/:id").post(OrderTransfer);
+router.route("/allOrders").get(GetTransfer);
 //Integrated on Frontend
 router.route("/online-payment").post(paymentMethod);
 

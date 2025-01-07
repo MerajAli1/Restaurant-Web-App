@@ -187,5 +187,24 @@ const Reservation = asyncHandler(async (req, res, next) => {
     next(new ApiError(500, error.message || "Internal Server Error."));
   }
 });
+const GetReservation = asyncHandler(async (req, res) => {
+  try {
+    const getReservation = await Data.find({});
+    if (!getReservation) {
+      throw new ApiError(400, "data not Found");
+    }
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          200,
+          getReservation,
+          "Action Data retrieve Successfully..."
+        )
+      );
+  } catch (error) {
+    throw new ApiError(500, "Server error, please try again later");
+  }
+});
 
-export { TableData, GetTableData, DelTableData, Reservation };
+export { TableData, GetTableData, DelTableData, Reservation, GetReservation };

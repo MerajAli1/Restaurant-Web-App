@@ -133,10 +133,28 @@ const OrderTransfer = asyncHandler(async (req, res) => {
       );
   } catch (error) {
     // Handle unexpected errors
-throw new ApiError(500, error.message || "Internal Server Error.");
+    throw new ApiError(500, error.message || "Internal Server Error.");
   }
 });
-
+const GetTransfer = asyncHandler(async (req, res) => {
+  try {
+    const getTransfer = await Order.find({});
+    if (!getTransfer) {
+      throw new ApiError(400, "data not Found");
+    }
+    return res
+      .status(201)
+      .json(
+        new ApiResponse(
+          200,
+          getTransfer,
+          "Action Data retrieve Successfully..."
+        )
+      );
+  } catch (error) {
+    throw new ApiError(500, "Server error, please try again later");
+  }
+});
 const paymentMethod = asyncHandler(async (req, res) => {
   const { products } = req.body;
   console.log(products);
@@ -167,5 +185,6 @@ export {
   GetCheckoutData,
   DelCheckoutData,
   OrderTransfer,
+  GetTransfer,
   paymentMethod,
 };
