@@ -101,7 +101,7 @@ const OrderTransfer = asyncHandler(async (req, res) => {
     const findOrder = await Checkout.findOne({ _id: id });
     //sending data to the Accepted/Rejected Order
     const orderStatus = await Order.create({
-      OrderData: findOrder,
+      // OrderData: findOrder,
       status: status,
     });
     //now delete from checkout
@@ -112,6 +112,7 @@ const OrderTransfer = asyncHandler(async (req, res) => {
         new ApiResponse(
           200,
           orderStatus,
+          findOrder,
           "Order send Successfully to Accepted Order and deleted from orders..."
         )
       );
