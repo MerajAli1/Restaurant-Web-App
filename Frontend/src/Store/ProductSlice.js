@@ -10,7 +10,7 @@ const initialState = {
 
 const options = {
   method: "GET",
-  url: "http://localhost:5000/api/v1/getMeal",
+  url: "http://localhost:5003/api/v1/getMeal",
 };
 
 export const fetchProduct = createAsyncThunk(

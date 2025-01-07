@@ -90,7 +90,7 @@ const DelCheckoutData = asyncHandler(async (req, res) => {
   }
 });
 //Accepted and rejected Order
-const OrderTransfer = asyncHandler(async (req, res, next) => {
+const OrderTransfer = asyncHandler(async (req, res) => {
   const { status } = req.body; // Accepted/Rejected status
   const { id } = req.params; // ID of the checkout order
 
@@ -103,7 +103,7 @@ const OrderTransfer = asyncHandler(async (req, res, next) => {
     // Find the order in the Checkout collection
     const findOrder = await Checkout.findById(id);
     if (!findOrder) {
-      return next(new ApiError(404, "Order not found in Checkout."));
+      throw new ApiError(404, "Order not found in Checkout.");
     }
 
     // Create a new order in the Order collection
@@ -127,13 +127,13 @@ const OrderTransfer = asyncHandler(async (req, res, next) => {
       .json(
         new ApiResponse(
           201,
-          { orderStatus, deletedOrder: findOrder },
+          { orderStatus },
           "Order successfully transferred and removed from Checkout."
         )
       );
   } catch (error) {
     // Handle unexpected errors
-    return next(new ApiError(500, error.message || "Internal Server Error."));
+throw new ApiError(500, error.message || "Internal Server Error.");
   }
 });
 

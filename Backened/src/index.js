@@ -7,7 +7,7 @@ dotenv.config({
   path: "./env",
 });
 
-const PORT = 5003;
+const PORT = 5005;
 const server = http.createServer(app);
 connectDB()
   .then(() => {
