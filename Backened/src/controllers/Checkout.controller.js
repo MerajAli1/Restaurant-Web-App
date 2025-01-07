@@ -108,10 +108,6 @@ const OrderTransfer = asyncHandler(async (req, res, next) => {
 
     // Create a new order in the Order collection
     const orderStatus = await Order.create({
-<<<<<<< HEAD
-      OrderData: findOrder,
-      status: status,
-=======
       firstName: findOrder.firstName,
       lastName: findOrder.lastName,
       email: findOrder.email,
@@ -120,7 +116,6 @@ const OrderTransfer = asyncHandler(async (req, res, next) => {
       address: findOrder.address,
       orderItems: findOrder.orderItems,
       status: status, // Accepted or Rejected
->>>>>>> ef13bec4c3e5cca2d07a0d95bdbeac347e840942
     });
 
     // Delete the original order from the Checkout collection
