@@ -1,6 +1,24 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { BASE_URL } from "../Base_URL/BASE_URL";
 const AcceptedAndRejectedOrder = () => {
+  const [loading, setLoading] = useState(false);
+  const [allOrder, setAllOrder] = useState([]);
+  const getOrder = async () => {
+    setLoading(true)
+    try {
+      const res = axios.get(`${BASE_URL}/allOrders`);
+      setAllOrder(res.data.data)
+      console.log(res.data);
+      setLoading(true)
+    } catch (error) {
+      setLoading(true)
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getOrder();
+  }, []);
   return (
     <>
       <div className="container">

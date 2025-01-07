@@ -1,6 +1,21 @@
 import React from "react";
 
 const AcceptedAndRejectedReservation = () => {
+  const getReservation = async () => {
+    setLoading(true)
+    try {
+      const res = axios.get(`${BASE_URL}/allReservation`);
+      setAllOrder(res.data.data)
+      console.log(res.data);
+      setLoading(true)
+    } catch (error) {
+      setLoading(true)
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getReservation();
+  }, []);
   return (
     <>
       <div className="container">
