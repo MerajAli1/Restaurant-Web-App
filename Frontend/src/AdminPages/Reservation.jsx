@@ -49,16 +49,17 @@ const Reservation = () => {
   const getReservations = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/getTableData`);
-      console.log("res.data", res.data.data);
+      console.log("getReservation", res.data.data);
       setReservations(res.data.data);
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
+      notifyError(error.message);
     }
   };
 
   // Setting Delete Reservation Id
   const setIdForDeleteReservation = async (id) => {
-    console.log("id", id);
+    // console.log("id", id);
     setReservationId(id);
     setReservationModal(true);
   };
@@ -66,13 +67,15 @@ const Reservation = () => {
   // Delete Reservation from the database
   const deleteReservation = async () => {
     try {
-      const res = await axios.delete(`${BASE_URL}/delTableData/${reservationId}`);
+      const res = await axios.delete(
+        `${BASE_URL}/delTableData/${reservationId}`
+      );
       notifySuccess("Reservation Deleted Successfully!!");
       setReservationModal(false);
       setRefresh(!refresh);
     } catch (error) {
       notifyError("Reservation Not Deleted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
   };
 
@@ -80,12 +83,12 @@ const Reservation = () => {
   const acceptReservation = async (id) => {
     try {
       const res = await axios.post(`${BASE_URL}/acceptedReservation/${id}`);
-      console.log("res.data", res.data);
+      // console.log("res.data", res.data);
       notifySuccess("Reservation Accepted Successfully!!");
       setRefresh(!refresh);
     } catch (error) {
       notifyError("Reservation Not Accepted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
 
     try {
@@ -93,11 +96,11 @@ const Reservation = () => {
         ReservationData: id,
         status: "Accepted",
       });
-      console.log("res.data", res.data);
-      notifySuccess("Order Accepted Successfully!!");
+      // console.log("res.data", res.data);
+      notifySuccess("Email Sent Successfully!!");
     } catch (error) {
       notifyError("Order Not Accepted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
   };
 
@@ -105,23 +108,23 @@ const Reservation = () => {
   const rejectReservation = async (id) => {
     try {
       const res = await axios.post(`${BASE_URL}/rejectedReservation/${id}`);
-      console.log("res.data", res.data);
-      notifySuccess("Reservation Rejected Successfully!!");
+      // console.log("res.data", res.data);
+      notifyError("Reservation has Rejected !!");
       setRefresh(!refresh);
     } catch (error) {
-      notifyError("Reservation Not Rejected!!");
-      console.log("error", error);
+      notifyError("Something went wrong while rejecting the Reservation!!");
+      // console.log("error", error);
     }
     try {
       const res = await axios.post(`${BASE_URL}/Acc&RejData/${id}`, {
         ReservationData: id,
-        status: "Accepted",
+        status: "Rejected",
       });
-      console.log("res.data", res.data);
-      notifySuccess("Order Accepted Successfully!!");
+      // console.log("res.data", res.data);
+      notifyError("Email sent for rejecting Reservation!");
     } catch (error) {
       notifyError("Order Not Accepted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
   };
 
@@ -160,7 +163,10 @@ const Reservation = () => {
           >
             No
           </button>
-          <button onClick={() => deleteReservation()} className="btn btn-danger">
+          <button
+            onClick={() => deleteReservation()}
+            className="btn btn-danger"
+          >
             Yes
           </button>
         </ModalHeader>
@@ -219,7 +225,7 @@ const Reservation = () => {
                 className="fw-bold pt-2 jacques-francois-shadow-regular"
                 style={{ fontSize: "30px" }}
               >
-                Total Tables :{" "}
+                Total Reservations :{" "}
                 <span style={{ color: "rgb(295, 150, 0)" }}>
                   {reservations.length}
                 </span>
@@ -282,14 +288,15 @@ const Reservation = () => {
                   <tr className="jacques-francois-shadow-regular fs-5">
                     <th scope="col">#</th>
                     <th scope="col"> Name</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">Phone No.</th>
+                    <th scope="col">Ocassion</th>
+                    <th scope="col">Size</th>
                     <th scope="col">Date</th>
                     <th scope="col">Day</th>
                     <th scope="col">Time</th>
                     <th scope="col" className="text-center">
-                      Status
+                      Action
                     </th>
-                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -300,7 +307,9 @@ const Reservation = () => {
                           {index + 1}
                         </th>
                         <td className="pt-3">{reservation.fullName}</td>
-                        <td className="pt-3">{reservation.email}</td>
+                        <td className="pt-3">{reservation.phoneNumber}</td>
+                        <td className="pt-3">{reservation.occassion}</td>
+                        <td className="pt-3">{reservation.partySize}</td>
                         <td className="pt-3">{reservation.ReservationDate}</td>
                         <td className="pt-3">{reservation.ReservationDay}</td>
                         <td className="pt-3">{reservation.ReservationTime}</td>
@@ -318,10 +327,12 @@ const Reservation = () => {
                             Rejected
                           </button>
                         </td>
-                        <td className="pt-2">
+                        {/* <td className="pt-2">
                           {" "}
                           <button
-                            onClick={() => setIdForDeleteReservation(reservation._id)}
+                            onClick={() =>
+                              setIdForDeleteReservation(reservation._id)
+                            }
                             style={{
                               display: "inline-flex",
                               justifyContent: "center",
@@ -337,7 +348,7 @@ const Reservation = () => {
                           >
                             <DeleteIcon className="text-danger" />
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     );
                   })}

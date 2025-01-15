@@ -55,10 +55,10 @@ const ReservationFrm = () => {
       const dayOfWeek = getDayOfWeek(date); // Get day of the week
       const formattedTime = formatTime(time); // Get time in AM/PM format
 
-      console.log("Date:", date);
-      console.log("Day of the Week:", dayOfWeek);
-      console.log("Time (AM/PM):", formattedTime);
-      console.log("Party Size:", size);
+      // console.log("Date:", date);
+      // console.log("Day of the Week:", dayOfWeek);
+      // console.log("Time (AM/PM):", formattedTime);
+      // console.log("Party Size:", size);
 
       // Set the day of the week and formatted time in state
       setDayOfWeek(dayOfWeek);

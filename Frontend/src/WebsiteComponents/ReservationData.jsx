@@ -70,21 +70,18 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
       ReservationTime: time,
       partySize: size,
     };
-    console.log("ReservatinData==>", ReservatinData);
+    // console.log("ReservatinData==>", ReservatinData);
 
     try {
-      const res = await axios.post(
-        `${BASE_URL}/tableData`,
-        ReservatinData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      console.log("res==>", res);
+      const res = await axios.post(`${BASE_URL}/tableData`, ReservatinData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      // console.log("res==>", res);
       notifySuccess("Reservation completed successfully!");
       notifySuccess("Accepted or rejected email will be sent to you shortly.");
+      navigate("/");
       // Clear fields on success
       setFullName("");
       setPhoneNumber("");
@@ -93,7 +90,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
       setRequest("");
       setReservationCompleted(true); // Set reservation completed state to true
     } catch (error) {
-      console.log("error==>", error);
+      // console.log("error==>", error);
       notifyError("Failed to complete reservation.");
     } finally {
       setLoading(false); // Set loading to false
@@ -112,7 +109,9 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
               Reservation Detail
             </h1>
           ) : (
-            <h1 className="jacques-francois-shadow-regular">Data Order</h1>
+            <h1 className="jacques-francois-shadow-regular">
+              Reservation Data
+            </h1>
           )}
         </ModalHeader>
         <ModalBody>
@@ -207,7 +206,7 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                       fontSize: "15px",
                     }}
                   />
-                  <input
+                  {/* <input
                     type="text"
                     placeholder="Select an Occasion"
                     value={occassion}
@@ -221,7 +220,30 @@ const ReservationData = ({ modal, setModal, date, time, size, day }) => {
                       border: "2px solid rgb(295, 150, 0)",
                       fontSize: "15px",
                     }}
-                  />
+                  /> */}
+                  <select
+                    value={occassion}
+                    onChange={(e) => setOccassion(e.target.value)}
+                    style={{
+                      padding: "10px",
+                      marginBottom: "10px",
+                      background: "transparent",
+                      width: "100%",
+                      borderRadius: "10px",
+                      border: "2px solid rgb(255, 150, 0)",
+                      fontSize: "15px",
+                    }}
+                  >
+                    <option value="" disabled>
+                      Select an Occasion
+                    </option>
+                    <option value="birthday">Birthday</option>
+                    <option value="wedding">Wedding</option>
+                    <option value="anniversary">Anniversary</option>
+                    <option value="graduation">Graduation</option>
+                    <option value="other">Others</option>
+                  </select>
+
                   <textarea
                     placeholder="Add a special Request.."
                     rows={3}

@@ -34,7 +34,7 @@ import DetailsIcon from "@mui/icons-material/Details";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
-
+import Emad from "../Images/Emad.jpg";
 import FastfoodIcon from "@mui/icons-material/Fastfood";
 // import ReactVirtualizedTable from "./Customer";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -215,7 +215,8 @@ export default function AdminDashboard() {
             component="div"
           >
             <span className="jacques-francois-shadow-regular">
-              <b>Fresco</b> <span className="fw-light">(Admin Portal)</span>
+              <b>Savory Bite Restaurant</b>{" "}
+              <span className="fw-light">(Admin Portal)</span>
             </span>
           </Typography>
         </Toolbar>
@@ -242,7 +243,7 @@ export default function AdminDashboard() {
                 sx={{ width: 90, height: 90 }}
                 className="border border-black border-2"
                 alt="Remy Sharp"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFzKngKTe0LsQY81ISNZ4eJ_YN6ro6K_63nsNal3ybnUudcjW-WiLzjaOvLwf079HZPHA&usqp=CAU"
+                src={Emad}
               />
             </Box>
           )}

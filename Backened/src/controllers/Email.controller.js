@@ -10,6 +10,7 @@ const AcceptedOrder = asyncHandler(async (req, res) => {
     const { id } = req.params;
     // Fetch the order details by ID
     const AccOrder = await Checkout.findById(id);
+    console.log("AccOrder", AccOrder);
 
     // Error handling if order is not found
     if (!AccOrder) {
@@ -22,7 +23,7 @@ const AcceptedOrder = asyncHandler(async (req, res) => {
     }
 
     const sub = "Order Accepted";
-    const msg = `Dear ${AccOrder.firstName} ${AccOrder.lastName},\n\nYour order of ${AccOrder.orderItems[0].name} has been confirmed. \n\nThank you for choosing us!\n\nBest regards,\nFresco Restaurant`;
+    const msg = `Dear ${AccOrder.firstName} ${AccOrder.lastName},\n\nYour order of ${AccOrder.orderItems[0].title} has been confirmed. \n\nThank you for choosing us!\n\nBest regards,\nSavory Bites Restaurant`;
     sendMail(AccOrder.email, sub, msg);
 
     return res
@@ -52,8 +53,8 @@ const RejectedOrder = asyncHandler(async (req, res) => {
     const msg = `Dear ${RejOrder.firstName} ${
       RejOrder.lastName
     },\n\nYour order of ${
-      RejOrder.orderItems[0].name // Assuming `orderItems` is an array and accessing the first item
-    } has been rejected due to some issues. \n\nThank you for choosing us!\n\nBest regards,\nFresco Restaurant`;
+      RejOrder.orderItems[0].title // Assuming `orderItems` is an array and accessing the first item
+    } has been rejected due to some issues. \n\nThank you for choosing us!\n\nBest regards,\nSavory Bites Restaurant`;
     sendMail(RejOrder.email, sub, msg);
 
     return res
@@ -81,7 +82,7 @@ const AcceptedReservation = asyncHandler(async (req, res) => {
     const sub = "Reservation Accepted";
     const msg = `Dear ${AccReservation.fullName},\n\nYour reservation for
       ${AccReservation.partySize} people on ${AccReservation.ReservationDate} at ${AccReservation.ReservationTime}
-       has been confirmed. \n\nThank you for choosing us!\n\nBest regards,\nRestaurant Name,
+       has been confirmed. \n\nThank you for choosing us!\n\n Best regards,\nSavory Bites Restaurant,
  `;
 
     sendMail(AccReservation.email, sub, msg);
@@ -110,7 +111,7 @@ const RejectedReservation = asyncHandler(async (req, res) => {
     const sub = "Reservation Rejection";
     const msg = `Dear ${RejReservation.fullName},\n\nYour reservation for
       ${RejReservation.partySize} people on ${RejReservation.ReservationDate} at ${RejReservation.ReservationTime}
-       has been rejected due to some issues. \n\nThank you for choosing us!\n\nBest regards,\nRestaurant Name,
+       has been rejected due to some issues. \n\nThank you for choosing us!\n\nBest regards,\nSavory Bites Restaurant,
  `;
 
     sendMail(RejReservation.email, sub, msg);

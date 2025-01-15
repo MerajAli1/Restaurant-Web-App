@@ -14,16 +14,16 @@ import { toast, ToastContainer } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 const TotalOrders = () => {
-  const [meal, setMeal] = React.useState([]);
-  const [mealModal, setMealModal] = React.useState(false);
+  const [meal, setMeal] = useState([]);
+  const [mealModal, setMealModal] = useState(false);
   //State for Delete Order Id
-  const [productId, setProductId] = React.useState("");
+  const [productId, setProductId] = useState("");
   //Sate for rejected Order
-  const [rejected, setRejected] = React.useState(false);
+  const [rejected, setRejected] = useState(false);
   //State for Accepted Order
-  const [accepted, setAccepted] = React.useState(false);
+  const [accepted, setAccepted] = useState(false);
   //State For Refresh the page
-  const [refresh, setRefresh] = React.useState(false);
+  const [refresh, setRefresh] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   //Notification for success
   const notifySuccess = (success) =>
@@ -54,15 +54,16 @@ const TotalOrders = () => {
   const getOrders = async () => {
     try {
       const res = await axios.get(`${BASE_URL}/getcheckout`);
-      console.log("res.data", res.data.data);
+      // console.log("get_Order", res.data.data);
       setMeal(res.data.data);
     } catch (error) {
-      console.log("error", error);
+      notifyError(error.message);
+      // console.log("error", error);
     }
   };
   //Setting Delete Order Id
   const setIdForDeleteOrder = async (id) => {
-    console.log("id", id);
+    // console.log("id", id);
     setProductId(id);
     setMealModal(true);
   };
@@ -75,19 +76,19 @@ const TotalOrders = () => {
       setRefresh(!refresh);
     } catch (error) {
       notifyError("Order Not Deleted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
   };
   // Accepted Order Function
   const acceptedOrder = async (id) => {
     try {
       const res = await axios.post(`${BASE_URL}/acceptedOrder/${id}`);
-      console.log("res.data", res.data);
+      // console.log("AccOrder", res.data);
       notifySuccess("Order Accepted Successfully!!");
       setRefresh(!refresh);
     } catch (error) {
       notifyError("Order Not Accepted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
 
     try {
@@ -95,11 +96,11 @@ const TotalOrders = () => {
         OrderData: id,
         status: "Accepted",
       });
-      console.log("res.data", res.data);
-      notifySuccess("Order Accepted Successfully!!");
+      // console.log("AccOrderEmail", res.data);
+      notifySuccess("Email sent Successfully!!");
     } catch (error) {
       notifyError("Order Not Accepted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
   };
 
@@ -112,23 +113,23 @@ const TotalOrders = () => {
   const rejectedOrder = async (id) => {
     try {
       const res = await axios.post(`${BASE_URL}/rejectedOrder/${id}`);
-      console.log("res.data", res.data);
+      // console.log("RejOrder", res.data);
       notifySuccess("Order Recjected Successfully!!");
     } catch (error) {
       notifyError("Order Not Rejected!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
 
-     try {
+    try {
       const res = await axios.post(`${BASE_URL}/orderTransfer/${id}`, {
         OrderData: id,
         status: "Rejected",
       });
-      console.log("res.data", res.data);
-      notifySuccess("Order Accepted Successfully!!");
+      // console.log("RejOrderEmail", res.data);
+      notifySuccess("Email sent Successfully!!");
     } catch (error) {
       notifyError("Order Not Accepted!!");
-      console.log("error", error);
+      // console.log("error", error);
     }
   };
 
@@ -294,12 +295,12 @@ const TotalOrders = () => {
                     <th scope="col">#</th>
                     <th scope="col">Order No.</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Phone No.</th>
                     <th scope="col">Order Date</th>
                     <th scope="col">Order Time</th>
                     <th scope="col" className="text-center">
-                      Status
+                      Action
                     </th>
-                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -311,12 +312,15 @@ const TotalOrders = () => {
                         <th scope="row" className="pt-3">
                           {i + 1}
                         </th>
-                        <td className="pt-3">{i + 1}</td>
+                        <td className="pt-3 text-center">{i + 1}</td>
                         <td className="pt-3">
                           {e.firstName + " " + e.lastName}
                         </td>
+                        <td className="pt-3">{e.phoneNumber}</td>
                         <td className="pt-3">{createdAtDate}</td>
-                        <td className="pt-3">{updatedAtDate}</td>
+                        <td className="pt-3">
+                          {new Date(e.createdAt).toTimeString().split(" ")[0]}
+                        </td>
                         <td className="pt-2">
                           <button
                             onClick={() => acceptedOrder(e._id)}
@@ -331,7 +335,7 @@ const TotalOrders = () => {
                             Rejected
                           </button>
                         </td>
-                        <td className="pt-2">
+                        {/* <td className="pt-2">
                           {" "}
                           <button
                             onClick={() => setIdForDeleteOrder(e._id)}
@@ -350,7 +354,7 @@ const TotalOrders = () => {
                           >
                             <DeleteIcon className="text-danger" />
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     );
                   })}

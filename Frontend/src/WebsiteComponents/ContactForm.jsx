@@ -27,7 +27,7 @@ const ContactForm = () => {
       };
       try {
         const response = await axios.post(`${BASE_URL}/message`, Message);
-        console.log(response.data);
+        // console.log(response.data);
         notifySuccess();
         // alert("Message sent successfully");
 
@@ -37,7 +37,7 @@ const ContactForm = () => {
         setNumber("");
         setMessage("");
       } catch (error) {
-        console.log(error, "ERROR");
+        // console.log(error, "ERROR");
       }
     }
   };

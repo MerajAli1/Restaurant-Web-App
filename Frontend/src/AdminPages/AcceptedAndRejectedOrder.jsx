@@ -5,15 +5,16 @@ const AcceptedAndRejectedOrder = () => {
   const [loading, setLoading] = useState(false);
   const [allOrder, setAllOrder] = useState([]);
   const getOrder = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = axios.get(`${BASE_URL}/allOrders`);
-      setAllOrder(res.data.data)
-      console.log(res.data);
-      setLoading(true)
+      const res = await axios.get(`${BASE_URL}/allOrders`);
+      setAllOrder(res.data.data);
+      // console.log("Accc&RejOrders", res.data.data);
+      setLoading(true);
     } catch (error) {
-      setLoading(true)
-      console.log(error);
+      setLoading(true);
+      alert(error.message);
+      // console.log(error);
     }
   };
   useEffect(() => {
@@ -63,22 +64,41 @@ const AcceptedAndRejectedOrder = () => {
                   <tr className="jacques-francois-shadow-regular fs-5">
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Phone No.</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Day</th>
                     <th scope="col">Time</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row" className="pt-3">
-                      1
-                    </th>
-                    <td className="pt-3">Emad Ali Khan</td>
-                    <td className="pt-3">20-1-2024</td>
-                    <td className="pt-3">Monday</td>
-                    <td className="pt-3">23:22:54</td>
-                  </tr>
-                </tbody>
+                {allOrder.map((order, index) => {
+                  const createdAtDate = order.createdAt.split("T")[0];
+                  const updatedAtDate = order.updatedAt.split("T")[0];
+
+                  if (order.status === "Accepted") {
+                    return (
+                      <tbody>
+                        <tr>
+                          <th scope="row" className="pt-3">
+                            {index + 1}
+                          </th>
+                          <td className="pt-3">
+                            {order.firstName}
+                            {order.lastName}
+                          </td>
+                          <td className="pt-3">{order.phoneNumber}</td>
+                          <td className="pt-3">{createdAtDate}</td>
+                          <td className="pt-3">
+                            {" "}
+                            {
+                              new Date(order.createdAt)
+                                .toTimeString()
+                                .split(" ")[0]
+                            }
+                          </td>
+                        </tr>
+                      </tbody>
+                    );
+                  }
+                })}
               </table>
             </div>
           </div>
@@ -102,22 +122,40 @@ const AcceptedAndRejectedOrder = () => {
                   <tr className="jacques-francois-shadow-regular fs-5">
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Phone No.</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Day</th>
                     <th scope="col">Time</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row" className="pt-3">
-                      1
-                    </th>
-                    <td className="pt-3">Emad Ali Khan</td>
-                    <td className="pt-3">20-1-2024</td>
-                    <td className="pt-3">Monday</td>
-                    <td className="pt-3">23:22:54</td>
-                  </tr>
-                </tbody>
+                {allOrder.map((order, index) => {
+                  const createdAtDate = order.createdAt.split("T")[0];
+                  // date.toISOString().split('T')[0]
+                  if (order.status === "Rejected") {
+                    return (
+                      <tbody>
+                        <tr>
+                          <th scope="row" className="pt-3">
+                            {index + 1}
+                          </th>
+                          <td className="pt-3">
+                            {order.firstName}
+                            {order.lastName}
+                          </td>
+                          <td className="pt-3">{order.phoneNumber}</td>
+                          <td className="pt-3">{createdAtDate}</td>
+                          <td className="pt-3">
+                            {" "}
+                            {
+                              new Date(order.createdAt)
+                                .toTimeString()
+                                .split(" ")[0]
+                            }
+                          </td>
+                        </tr>
+                      </tbody>
+                    );
+                  }
+                })}
               </table>
             </div>
           </div>

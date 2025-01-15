@@ -7,7 +7,7 @@ import { Modal, ModalBody, ModalHeader } from "reactstrap";
 
 const Notification = () => {
   const [notifications, setNotification] = useState([]);
-  const [notificationId, setNotificationId] = useState('');
+  const [notificationId, setNotificationId] = useState("");
   const [refresh, setRefresh] = useState(false);
   const [notificationModal, setNotificationModal] = useState(false);
   const [loading, setLoading] = useState(true); // Loading state
@@ -41,10 +41,10 @@ const Notification = () => {
     try {
       const response = await axios.get(`${BASE_URL}/getMessage`);
       setNotification(response.data.data);
-      console.log(response.data.data);
+      // console.log(response.data.data);
     } catch (error) {
-      notifyError("Error Loading Notification");
-      console.log(error);
+      notifyError("Error while Loading Notification");
+      // console.log(error);
     } finally {
       setLoading(false); // Set loading to false after fetching
     }
@@ -57,14 +57,16 @@ const Notification = () => {
 
   const deleteNotification = async () => {
     try {
-      const response = await axios.delete(`${BASE_URL}/deleteMessage/${notificationId}`);
-      console.log(response.data);
+      const response = await axios.delete(
+        `${BASE_URL}/deleteMessage/${notificationId}`
+      );
+      // console.log(response.data);
       setRefresh(!refresh);
       notifySuccess("Notification Deleted Successfully");
       setNotificationModal(false);
     } catch (error) {
-      notifyError("Error Deleting Notification");
-      console.log(error);
+      notifyError("Error while Deleting Notification");
+      // console.log(error);
     }
   };
 
@@ -91,14 +93,19 @@ const Notification = () => {
             <h1 className="jacques-francois-shadow-regular text-danger">
               WARNING
             </h1>
-            <p>Are You Sure you want to delete?</p>
+            <p className="jacques-francois-shadow-regular">
+              Are You Sure you want to delete?
+            </p>
             <button
               onClick={() => setNotificationModal(false)}
-              className="btn btn-secondary me-3"
+              className="btn btn-secondary px-4 me-3"
             >
               No
             </button>
-            <button onClick={() => deleteNotification()} className="btn btn-danger">
+            <button
+              onClick={() => deleteNotification()}
+              className="btn btn-danger px-4"
+            >
               Yes
             </button>
           </ModalHeader>
@@ -127,7 +134,10 @@ const Notification = () => {
         </Typography>
 
         {loading ? (
-          <div className="d-flex justify-content-center align-items-center" style={{ height: "200px" }}>
+          <div
+            className="d-flex justify-content-center align-items-center"
+            style={{ height: "200px" }}
+          >
             <CircularProgress />
           </div>
         ) : (

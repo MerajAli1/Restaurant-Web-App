@@ -12,7 +12,7 @@ import {
 import logo2 from "../Images/logo.png";
 const Navbar = () => {
   const { addToCart } = useSelector((state) => state.addToCartReducer);
-  console.log(addToCart, "Navbar");
+  // console.log(addToCart, "Navbar");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -32,8 +32,8 @@ const Navbar = () => {
         <ModalBody>
           {addToCart.length !== 0 ? (
             addToCart.map((data, index) => {
-              console.log(addToCart, "data");
-              console.log(data, "data");
+              // console.log(addToCart, "data");
+              // console.log(data, "data");
 
               return (
                 <>

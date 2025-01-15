@@ -67,7 +67,7 @@ const WelcomePage = () => {
         {" "}
         Welcome to the{" "}
         <b className="text-light">
-          <u>Society Portal</u>
+          <u>Restaurant Portal</u>
         </b>
       </h1>
       <h1

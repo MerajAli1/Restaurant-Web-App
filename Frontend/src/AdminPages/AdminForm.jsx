@@ -48,22 +48,19 @@ export default function AdminForm() {
         email: email,
         password: password,
       };
-      console.log(adminData, "adminData");
+      // console.log(adminData, "adminData");
       try {
-        const response = await axios.post(
-          `${BASE_URL}/login`,
-          {
-            email: email,
-            password: password,
-          }
-        );
-        console.log(response, "adminLogin");
+        const response = await axios.post(`${BASE_URL}/login`, {
+          email: email,
+          password: password,
+        });
+        // console.log(response, "adminLogin");
         if (response) {
           localStorage.setItem("uid", email);
           navigate("/adminPortal/welcome");
         }
       } catch (error) {
-        console.log(error.message);
+        // console.log(error.message);
         notifyInvalidError(error.message);
       }
     }

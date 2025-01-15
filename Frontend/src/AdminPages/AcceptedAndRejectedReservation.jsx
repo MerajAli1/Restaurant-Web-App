@@ -1,16 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { BASE_URL } from "../Base_URL/BASE_URL";
 
 const AcceptedAndRejectedReservation = () => {
+  const [loading, setLoading] = useState();
+  const [allOrder, setAllOrder] = useState();
+  console.log(allOrder);
+
   const getReservation = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
-      const res = axios.get(`${BASE_URL}/allReservation`);
-      setAllOrder(res.data.data)
-      console.log(res.data);
-      setLoading(true)
+      const res = await axios.get(`${BASE_URL}/allReservation`);
+      setAllOrder(res.data.data);
+      // console.log("Acc&RejData", res.data);
+      setLoading(true);
     } catch (error) {
-      setLoading(true)
-      console.log(error);
+      setLoading(true);
+      // console.log(error);
+      alert(error.message);
     }
   };
   useEffect(() => {
@@ -60,24 +67,36 @@ const AcceptedAndRejectedReservation = () => {
                   <tr className="jacques-francois-shadow-regular fs-5">
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">Phone No.</th>
+                    <th scope="col">Size</th>
                     <th scope="col">Date</th>
                     <th scope="col">Day</th>
                     <th scope="col">Time</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row" className="pt-3">
-                      1
-                    </th>
-                    <td className="pt-3">Emad Ali Khan</td>
-                    <td className="pt-3">emadalikhan5@gmail.com</td>
-                    <td className="pt-3">20-1-2024</td>
-                    <td className="pt-3">Monday</td>
-                    <td className="pt-3">23:22:54</td>
-                  </tr>
-                </tbody>
+
+                {allOrder?.map((order, index) => {
+                  const createdAtDate = order.createdAt.split("T")[0];
+                  // date.toISOString().split('T')[0]
+                  if (order.status === "Accepted") {
+                    return (
+                      <tbody>
+                        <tr>
+                          <th scope="row" className="pt-3">
+                            {index + 1}
+                          </th>
+                          <td className="pt-3">{order.fullName}</td>
+                          <td className="pt-3">{order.phoneNumber}</td>
+                          <td className="pt-3">{order.partySize}</td>
+                          <td className="pt-3">{order.ReservationDate}</td>
+                          <td className="pt-3">{order.ReservationDay}</td>
+                          <td className="pt-3">{order.ReservationTime}</td>
+                        </tr>
+                      </tbody>
+                    );
+                  } else {
+                  }
+                })}
               </table>
             </div>
           </div>
@@ -101,24 +120,34 @@ const AcceptedAndRejectedReservation = () => {
                   <tr className="jacques-francois-shadow-regular fs-5">
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Email</th>
+                    <th scope="col">Phone No.</th>
+                    <th scope="col">Size</th>
                     <th scope="col">Date</th>
                     <th scope="col">Day</th>
                     <th scope="col">Time</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row" className="pt-3">
-                      1
-                    </th>
-                    <td className="pt-3">Emad Ali Khan</td>
-                    <td className="pt-3">emadalikhan5@gmail.com</td>
-                    <td className="pt-3">20-1-2024</td>
-                    <td className="pt-3">Monday</td>
-                    <td className="pt-3">23:22:54</td>
-                  </tr>
-                </tbody>
+                {allOrder?.map((order, index) => {
+                  const createdAtDate = order.createdAt.split("T")[0];
+                  // date.toISOString().split('T')[0]
+                  if (order.status === "Rejected") {
+                    return (
+                      <tbody>
+                        <tr>
+                          <th scope="row" className="pt-3">
+                            {index + 1}
+                          </th>
+                          <td className="pt-3">{order.fullName}</td>
+                          <td className="pt-3">{order.phoneNumber}</td>
+                          <td className="pt-3">{order.partySize}</td>
+                          <td className="pt-3">{order.ReservationDate}</td>
+                          <td className="pt-3">{order.ReservationDay}</td>
+                          <td className="pt-3">{order.ReservationTime}</td>
+                        </tr>
+                      </tbody>
+                    );
+                  }
+                })}
               </table>
             </div>
           </div>

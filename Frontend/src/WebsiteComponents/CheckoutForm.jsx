@@ -52,7 +52,7 @@ const CheckoutForm = () => {
 
   const OrderPlaced = async (e) => {
     e.preventDefault();
-    console.log("Order Placed");
+    // console.log("Order Placed");
 
     if (
       !(
@@ -87,7 +87,7 @@ const CheckoutForm = () => {
         })),
       };
 
-      console.log("data", data);
+      // console.log("data", data);
     }
     try {
       const res = await axios.post(`${BASE_URL}/checkout`, {
@@ -104,13 +104,13 @@ const CheckoutForm = () => {
           price: orderItem.Price,
         })),
       });
-      console.log("res", res);
+      // console.log("res", res);
       notifySuccess("🦄 Your Order Placed Successfully");
       if (res) {
         navigate("/orderSuccess");
       }
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       notifyError("🦄 Failed to place order");
     }
   };
@@ -118,7 +118,7 @@ const CheckoutForm = () => {
   // Handler function to update state when radio button is selected
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
-    console.log("Selected Payment Method:", event.target.value);
+    // console.log("Selected Payment Method:", event.target.value);
   };
 
   // Payment Integration Function
@@ -174,7 +174,8 @@ const CheckoutForm = () => {
           notifyError(result.error.message);
         }
       } catch (error) {
-        console.error("Error during payment integration:", error);
+        // console.error("Error during payment integration:", error);
+        notifyError(error.message);
       }
     } else if (selectedValue === "Cash On Delivery") {
       setSummary(true);
@@ -216,7 +217,7 @@ const CheckoutForm = () => {
               return (
                 <>
                   <div key={index}>
-                    <div className="mt-5 d-flex justify-content-between playfair-display">
+                    <div className="mt-2 d-flex justify-content-between playfair-display">
                       <h5 className="ms-4">
                         {data.mealName} (Qty : {data.count})
                       </h5>
@@ -252,7 +253,7 @@ const CheckoutForm = () => {
           </div>
 
           {addToCart.length !== 0 && (
-            <div className="d-flex justify-content-center align-items-center mt-5">
+            <div className="d-flex justify-content-center align-items-center mt-3">
               <button
                 className="button"
                 onClick={OrderPlaced}

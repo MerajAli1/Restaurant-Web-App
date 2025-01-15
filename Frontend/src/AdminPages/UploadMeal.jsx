@@ -82,7 +82,7 @@ const UploadMeal = () => {
       meal_id,
       mealTitle,
     };
-    console.log("mealData", mealData);
+    // console.log("mealData", mealData);
     try {
       const res = await axios.post(
         `${BASE_URL}/meal`,
@@ -100,10 +100,17 @@ const UploadMeal = () => {
           },
         }
       );
-      console.log("res", res);
+      // console.log("uploadMeal Data", res);
       notifySuccess("🦄 Your item add Successfully");
+      // Reset fields after success
+      setMealCategory(""); // Reset mealCategory state
+      setMealDescription(""); // Reset mealDescription state
+      setMealPrice(""); // Reset mealPrice state
+      setId(""); // Reset meal_id state
+      setMealTitle(""); // Reset mealTitle state
+      setMealImage(null); // Reset mealImage state (assuming it's a file input)
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       notifyError("🦄 Something went wrong!");
     } finally {
       setIsLoading(false);
@@ -113,7 +120,7 @@ const UploadMeal = () => {
   //Get Product Function
   const getProduct = async () => {
     const res = await axios.get(`${BASE_URL}/getMeal`);
-    console.log("res", res.data.data);
+    // console.log("getUploaded meal", res.data.data);
     setMealData(res.data.data);
   };
 
@@ -126,10 +133,10 @@ const UploadMeal = () => {
   );
 
   const openEditModal = (meal) => {
-    setMealCategory(meal.mealCategory);
+    setMealCategory(meal.meal_category);
     setMealTitle(meal.mealName);
-    setMealDescription(meal.mealDescription);
-    setMealPrice(meal.mealPrice);
+    setMealDescription(meal.Description);
+    setMealPrice(meal.Price);
     setMeal_id(meal.meal_id);
     setMealImage(meal.image);
     setId(meal._id);
@@ -139,7 +146,14 @@ const UploadMeal = () => {
   const updateProduct = async (e) => {
     e.preventDefault();
     if (
-      !(mealCategory && mealTitle && mealDescription && mealPrice && meal_id && mealImage)
+      !(
+        mealCategory &&
+        mealTitle &&
+        mealDescription &&
+        mealPrice &&
+        meal_id &&
+        mealImage
+      )
     ) {
       notifyError("🦄 Fill all the fields!");
       return;
@@ -154,21 +168,17 @@ const UploadMeal = () => {
     formData.append("mealTitle", mealTitle);
 
     try {
-      const res = await axios.put(
-        `${BASE_URL}/updateMeal/${id}`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log("res", res);
+      const res = await axios.put(`${BASE_URL}/updateMeal/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // console.log("res", res);
       notifySuccess("🦄 Your item updated Successfully");
       setUpdateMeal(false);
       getProduct();
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       notifyError("🦄 Something went wrong!");
     } finally {
       setIsLoading(false);
@@ -184,12 +194,12 @@ const UploadMeal = () => {
     setIsLoading(true);
     try {
       const res = await axios.delete(`${BASE_URL}/delMeal/${deleteId}`);
-      console.log("res", res);
+      // console.log("res", res);
       notifySuccess("🦄 Your item deleted Successfully");
       getProduct();
       setDeleteMeal(false);
     } catch (error) {
-      console.log("error", error);
+      // console.log("error", error);
       notifyError("🦄 Something went wrong!");
     } finally {
       setIsLoading(false);
@@ -397,11 +407,12 @@ const UploadMeal = () => {
                 item
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                <button
-                  className="button px-5"
-                  disabled={isLoading}
-                >
-                  {isLoading ? <CircularProgress size={24} color="inherit" /> : "Upload"}
+                <button className="button px-5" disabled={isLoading}>
+                  {isLoading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Upload"
+                  )}
                 </button>
               </Grid>
             </Grid>
@@ -444,6 +455,7 @@ const UploadMeal = () => {
             <Grid container spacing={1}>
               <Grid xs={12} item>
                 <Autocomplete
+                  value={mealCategory}
                   placeholder="Category"
                   options={["Dinner", "Lunch", "Desert", "Drink"]}
                   renderInput={(params) => (
@@ -505,7 +517,7 @@ const UploadMeal = () => {
               <Grid xs={12} item>
                 <TextField
                   required
-                  //   value={description}
+                  value={mealDescription}
                   label="Description"
                   onChange={(e) => setMealDescription(e.target.value)}
                   multiline
@@ -535,6 +547,7 @@ const UploadMeal = () => {
               <Grid xs={6} item>
                 <TextField
                   required
+                  value={mealPrice}
                   label="Price"
                   onChange={(e) => setMealPrice(e.target.value)}
                   placeholder="mealPrice"
@@ -620,11 +633,12 @@ const UploadMeal = () => {
                 item
                 style={{ display: "flex", justifyContent: "center" }}
               >
-                <button
-                  className="button px-5"
-                  disabled={isLoading}
-                >
-                  {isLoading ? <CircularProgress size={24} color="inherit" /> : "Upload"}
+                <button className="button px-5" disabled={isLoading}>
+                  {isLoading ? (
+                    <CircularProgress size={24} color="inherit" />
+                  ) : (
+                    "Update"
+                  )}
                 </button>
               </Grid>
             </Grid>
@@ -663,10 +677,21 @@ const UploadMeal = () => {
         <ModalBody>
           <p>Are you sure you want to delete this item?</p>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <button className="button px-5" onClick={handleDelete} disabled={isLoading}>
-              {isLoading ? <CircularProgress size={24} color="inherit" /> : "Yes"}
+            <button
+              className="button px-5"
+              onClick={handleDelete}
+              disabled={isLoading}
+            >
+              {isLoading ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : (
+                "Yes"
+              )}
             </button>
-            <button className="button px-5" onClick={() => setDeleteMeal(false)}>
+            <button
+              className="button px-5"
+              onClick={() => setDeleteMeal(false)}
+            >
               No
             </button>
           </div>
